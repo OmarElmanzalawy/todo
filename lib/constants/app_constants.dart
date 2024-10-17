@@ -12,4 +12,11 @@ class AppConstants {
       color: AppColors.fadedBlack,
       fontSize: 16,
       letterSpacing: 1);
+
+  static const TextStyle taskTitleStyle = TextStyle(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 22);
+
 }
+

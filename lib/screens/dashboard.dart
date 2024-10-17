@@ -14,33 +14,10 @@ class DashBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
     return Theme(
       data: AppThemeData.greenTheme,
       child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 80,
-          elevation: 0,
-          //TODO fix background color to make app bar not visible
-          backgroundColor: const Color(0xff235A2F),
-          leading: const Padding(
-            padding: EdgeInsets.only(left: 15.0, top: 12),
-            child: CircleAvatar(
-              backgroundColor: Colors.transparent,
-              child: Icon(Icons.account_circle,
-                  size: 50, color: Color(0xffFDFBFF)),
-            ),
-          ),
-          actions: const [
-            CircleIcon(icon: AppIcons.notifications_outline),
-            SizedBox(
-              width: 5,
-            ),
-            CircleIcon(icon: AppIcons.plus),
-            SizedBox(
-              width: 15,
-            )
-          ],
-        ),
         body: Stack(
           children: [
             Container(
@@ -48,9 +25,31 @@ class DashBoardScreen extends StatelessWidget {
               height: double.infinity,
               decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                      colors: [Color(0xff235A2F), Color(0xff24522D)])),
+                      colors: [AppColors.darkGreen, AppColors.darkestGreen])),
               child: Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0,bottom: 20,top: 50),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          child: 
+                          Icon(Icons.account_circle,
+                              size: 50, color: AppColors.primaryText),
+                        ),
+                        Spacer(),
+                        CircleIcon(icon: AppIcons.notifications_outline),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        CircleIcon(icon: AppIcons.plus),
+                        SizedBox(
+                          width: 15,
+                        )
+                      ],
+                    ),
+                  ),
                   Container(
                     color: Colors.transparent,
                     width: double.infinity,
@@ -86,7 +85,9 @@ class DashBoardScreen extends StatelessWidget {
                               'MONDAY',
                               style: AppConstants.thinText,
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             IntrinsicHeight(
                               child: Row(
                                 children: [
@@ -106,7 +107,8 @@ class DashBoardScreen extends StatelessWidget {
                                     child: Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'FINISHED TASKS',
@@ -114,8 +116,11 @@ class DashBoardScreen extends StatelessWidget {
                                           ),
                                           Text('4 tasks'),
                                           Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                                            child: Divider(color: Colors.black38,),
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 8.0),
+                                            child: Divider(
+                                              color: Colors.black38,
+                                            ),
                                           ),
                                           Text(
                                             'UNFINISHED TASKS',
@@ -127,7 +132,7 @@ class DashBoardScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                              ),                         
+                              ),
                             ),
                           ],
                         ),
@@ -137,13 +142,12 @@ class DashBoardScreen extends StatelessWidget {
                 ],
               ),
             ),
-             Align(
+            Align(
               alignment: Alignment.bottomCenter,
               child: RoundedCard(
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40)
-                ),
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40)),
                 backgroundColor: AppColors.primaryText,
                 height: 300,
                 child: Padding(
@@ -153,36 +157,49 @@ class DashBoardScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          const Text('Today Tasks',
-                          style: TextStyle(
-                            color: AppColors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600
-                          ),
+                          const Text(
+                            'Today Tasks',
+                            style: TextStyle(
+                                color: AppColors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600),
                           ),
                           const Spacer(),
                           GestureDetector(
-                            onTap: ()=>print('View All'),
+                            onTap: () {
+                              Navigator.pushNamed(context, '/todo');
+                            },
                             child: const Row(
                               children: [
-                                Text('View All',style: TextStyle(color: AppColors.subtitleText),),
-                                SizedBox(width: 4,),
-                            Icon(AppIcons.nextArrow,color: AppColors.subtitleText,size: 12,),
+                                Text(
+                                  'View All',
+                                  style:
+                                      TextStyle(color: AppColors.subtitleText),
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Icon(
+                                  AppIcons.nextArrow,
+                                  color: AppColors.subtitleText,
+                                  size: 12,
+                                ),
                               ],
                             ),
                           ),
                         ],
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(20.0),
+                        padding: const EdgeInsets.symmetric(vertical: 15.0),
                         child: Container(
                           color: Colors.transparent,
                           height: 180,
                           child: CarouselView(
+                            elevation: 1,
                             itemSnapping: true,
-                            itemExtent: MediaQuery.sizeOf(context).width -50,
+                            itemExtent: MediaQuery.sizeOf(context).width - 80,
                             children: List.generate(10, (int index) {
-                              return DashTask();
+                              return const DashTask();
                             }),
                           ),
                         ),
@@ -190,8 +207,8 @@ class DashBoardScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                ),
-                ),
+              ),
+            ),
           ],
         ),
       ),
