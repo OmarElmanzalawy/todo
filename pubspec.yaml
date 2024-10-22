@@ -9,6 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  
+  fluid_dialog: ^2.0.0
+  get_it: ^8.0.0
+  flutter_riverpod: ^2.5.3
 
 dev_dependencies:
   flutter_test:

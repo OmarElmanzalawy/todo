@@ -7,4 +7,6 @@ class TaskModel {
 
   TaskModel({required this.title, this.status, this.description, this.deadline});
 
+  
+
 }
