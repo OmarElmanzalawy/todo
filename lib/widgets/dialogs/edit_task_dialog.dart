@@ -6,14 +6,14 @@ import 'package:todo/models/task_model.dart';
 import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
 
-class CreateTaskDialog extends ConsumerStatefulWidget  {
-  const CreateTaskDialog({super.key});
+class EditTaskDialog extends ConsumerStatefulWidget  {
+  const EditTaskDialog({super.key});
 
   @override
-  ConsumerState<CreateTaskDialog> createState() => _CreateTaskDialogState();
+  ConsumerState<EditTaskDialog> createState() => _EditTaskDialogState();
 }
 
-class _CreateTaskDialogState extends ConsumerState<CreateTaskDialog> {
+class _EditTaskDialogState extends ConsumerState<EditTaskDialog> {
 
 final TextEditingController taskController = TextEditingController();
 final TextEditingController descriptionController = TextEditingController();

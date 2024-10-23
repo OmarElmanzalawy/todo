@@ -3,7 +3,8 @@ import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_icons.dart';
 
 class ConfirmBox extends StatelessWidget {
-  const ConfirmBox({super.key});
+  const ConfirmBox({super.key,this.ontap});
+  final VoidCallback? ontap;
 
   @override
   Widget build(BuildContext context) {
@@ -12,8 +13,8 @@ class ConfirmBox extends StatelessWidget {
         color: AppColors.floatingButton,
         borderRadius: BorderRadius.circular(12)
       ),
-      child: IconButton(onPressed: (){
-
+      child: IconButton(onPressed:ontap ?? (){
+        
       }, 
       icon: Icon(AppIcons.tick,color: AppColors.primaryText,)),
     );

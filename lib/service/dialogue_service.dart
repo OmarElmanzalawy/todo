@@ -19,4 +19,14 @@ class DialogueService {
                   return widget;
                 })));
   }
+  Future<void> showAlertDialog(Widget widget,BuildContext context) async {
+    await showAdaptiveDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (context) => AlertDialog.adaptive(
+          title: Text('Delete'),
+          content: Text('Are you sure you want to delete this task'),
+          actions: [Text('Yes'),Text('No')],
+        ));
+  }
 }

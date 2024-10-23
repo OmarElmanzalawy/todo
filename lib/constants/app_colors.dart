@@ -12,5 +12,6 @@ class AppColors{
   static const Color subtitleText = Colors.black26;
   static const Color black = Colors.black;
   static final Color lightGreyBorder = Colors.grey.shade300;
+  static const Color red = Colors.red;
 
 }

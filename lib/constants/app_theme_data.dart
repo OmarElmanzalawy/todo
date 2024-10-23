@@ -5,7 +5,9 @@ class AppThemeData{
 
 static final ThemeData mainTheme = ThemeData.light().copyWith(
     appBarTheme: AppBarTheme(
-      elevation: 1,
+      elevation: 0,
+      backgroundColor: AppColors.primaryText,
+      iconTheme: IconThemeData(color: AppColors.primaryText)
     ),
     scaffoldBackgroundColor: AppColors.primaryText,
     colorScheme: ColorScheme.light(surface: Color.fromARGB(26, 13, 184, 247))
