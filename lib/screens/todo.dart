@@ -13,6 +13,7 @@ import 'package:todo/widgets/dialogs/create_task_dialog.dart';
 import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
 import 'package:todo/widgets/todo/task_widget.dart';
+import 'package:todo/widgets/todo/tasks_circle_counter.dart';
 
 class TodoScreen extends ConsumerWidget {
   TodoScreen({super.key});
@@ -22,7 +23,7 @@ class TodoScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tasks = ref.watch(tasksProvider);
-    print(tasks);
+    //tasks.tasksList.isNotEmpty ? print(tasks.tasksList[0].id): null;
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
@@ -49,35 +50,7 @@ class TodoScreen extends ConsumerWidget {
                 BoxConstraints(minHeight: 200, minWidth: double.infinity),
             decoration: BoxDecoration(color: AppColors.darkGreen),
             //TODO ADD SOME KIND OF BACKGROUND WITH A BLUR EFFECT (IDEA)
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 60.0),
-                child: DottedBorder(
-                  padding: EdgeInsets.all(0),
-                  borderType: BorderType.Circle,
-                  strokeWidth: 1,
-                  color: AppColors.primaryText,
-                  child: Container(
-                
-                    height: 220,
-                    width: 220,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('TASKS FINISHED'),
-                        Divider(indent: 20,),
-                        Text(
-                            ref.read(tasksProvider).tasksList.length.toString())
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            child: TasksCircleCounter(),
           ),
           Padding(
             padding: EdgeInsets.only(top: 40, left: 15, right: 15),
@@ -134,33 +107,29 @@ class TodoScreen extends ConsumerWidget {
               child: ListView.builder(
                   itemCount: tasks.tasksList.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 0, vertical: 0),
-                      child: Dismissible(
-                          onDismissed: (DismissDirection direction) {
-                            if (direction == DismissDirection.endToStart) {
-                              ref
-                                  .read(tasksProvider.notifier)
-                                  .deleteTask(tasks.tasksList[index]);
-                            }
-                          },
-                          key: ValueKey<TaskModel>(tasks.tasksList[index]),
-                          secondaryBackground: Container(
-                            color: AppColors.red,
-                            child: Icon(
-                              AppIcons.delete,
-                              color: AppColors.primaryText,
-                              size: 40,
-                            ),
+                    return Dismissible(
+                        onDismissed: (DismissDirection direction) {
+                          if (direction == DismissDirection.endToStart) {
+                            ref
+                                .read(tasksProvider.notifier)
+                                .deleteTask(tasks.tasksList[index]);
+                          }
+                        },
+                        key: ValueKey<TaskModel>(tasks.tasksList[index]),
+                        secondaryBackground: Container(
+                          color: AppColors.red,
+                          child: Icon(
+                            AppIcons.delete,
+                            color: AppColors.primaryText,
+                            size: 40,
                           ),
-                          background: Container(
-                            color: AppColors.darkGreen,
-                          ),
-                          child: TaskWidget(
-                            taskModel: tasks.tasksList[index],
-                          )),
-                    );
+                        ),
+                        background: Container(
+                          color: AppColors.darkGreen,
+                        ),
+                        child: TaskWidget(
+                          taskModel: tasks.tasksList[index],
+                        ));
                   })),
         ],
       ),

@@ -18,7 +18,7 @@ class TaskWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        getIt<DialogueService>().showDialog(EditTaskDialog(), context);
+        getIt<DialogueService>().showDialog(EditTaskDialog(taskModel: taskModel,), context);
       },
       child: Container(
         constraints: BoxConstraints(minHeight: 75),

@@ -7,7 +7,8 @@ import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
 
 class EditTaskDialog extends ConsumerStatefulWidget  {
-  const EditTaskDialog({super.key});
+  const EditTaskDialog({super.key,required this.taskModel});
+  final TaskModel taskModel;
 
   @override
   ConsumerState<EditTaskDialog> createState() => _EditTaskDialogState();
@@ -20,6 +21,7 @@ final TextEditingController descriptionController = TextEditingController();
 
 
 
+
   @override
   Widget build(BuildContext context) {
                        return Container(
@@ -29,8 +31,8 @@ final TextEditingController descriptionController = TextEditingController();
                       padding: const EdgeInsets.all(12.0),
                       child: Column(
                       children: [
-                        Mytextfield(hintText: 'Task Name',controller: taskController,),
-                        Mytextfield(hintText: 'Description',fontSize: 16,textColor: AppColors.subtitleText,controller: descriptionController,),
+                        Mytextfield(hintText: widget.taskModel.title??'',controller: taskController,),
+                        Mytextfield(hintText: widget.taskModel.description??'',fontSize: 16,textColor: AppColors.subtitleText,controller: descriptionController,),
                         SizedBox(height: 60,),
                         Align(
                           alignment: Alignment.bottomRight,
@@ -38,7 +40,7 @@ final TextEditingController descriptionController = TextEditingController();
                             padding: const EdgeInsets.only(right: 12.0),
                             child: ConfirmBox(
                               ontap: (){
-                                  ref.read(tasksProvider.notifier).addTasks(TaskModel(title: taskController.text,description: descriptionController.text));
+                                  ref.read(tasksProvider.notifier).editTask(widget.taskModel, titleController: taskController,descriptionController: descriptionController);
                                   Navigator.pop(context);
                               },
                             ),

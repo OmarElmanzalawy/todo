@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/Providers/tasks_state.dart';
@@ -26,9 +27,13 @@ class TasksProvider extends StateNotifier<TasksState>{
     print(taskList);
   }
 
-  void editTask(TaskModel taskModel){
-    List<TaskModel> taskList = state.tasksList;
-    //TODO COMPLETE EDIT LOGIC
+  void editTask(TaskModel taskModel,{TextEditingController? titleController, TextEditingController? descriptionController}){
+    titleController!.text = taskModel.title ?? '';
+    descriptionController!.text = taskModel.description ?? '';
+    final List<TaskModel> tasks = state.tasksList;
+    final int index = tasks.indexWhere((element)=> element.id == taskModel.id);
+    tasks[index] = TaskModel(title: titleController!.text,description: descriptionController!.text);
+    state = state.copywith(tasksList: tasks);
   }
 
   void clearTasks(){
