@@ -20,7 +20,7 @@ class _CreateTaskDialogState extends ConsumerState<CreateTaskDialog> {
 final TextEditingController taskController = TextEditingController();
 final TextEditingController descriptionController = TextEditingController();
 
-
+TimeOfDay? deadlineTime;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ final TextEditingController descriptionController = TextEditingController();
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             MyActionChip(
-                              label: Text('Deadline?'),
+                              label: Text(deadlineTime != null ? deadlineTime!.format(context).toString() :'Deadline?'),
                               backgroundColor: Colors.grey.shade100,
                               icon: Icon(AppIcons.alarm,color: Colors.black),
                               onpressed: (){
@@ -47,7 +47,9 @@ final TextEditingController descriptionController = TextEditingController();
                                  //initialEntryMode: TimePickerEntryMode.input,
                                  barrierColor: Colors.transparent,
 
-                                 );
+                                 ).then((value) =>setState(() {
+                                   deadlineTime= value;
+                                 }) );
                               },
                             ),
                           ],
@@ -59,7 +61,7 @@ final TextEditingController descriptionController = TextEditingController();
                             padding: const EdgeInsets.only(right: 12.0),
                             child: ConfirmBox(
                               ontap: (){
-                                  ref.read(tasksProvider.notifier).addTasks(TaskModel(title: taskController.text,description: descriptionController.text));
+                                  ref.read(tasksProvider.notifier).addTasks(TaskModel(title: taskController.text,description: descriptionController.text,deadline: deadlineTime));
                                   Navigator.pop(context);
                               },
                             ),

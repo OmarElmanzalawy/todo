@@ -51,12 +51,12 @@ class TaskWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Divider(color: AppColors.subtitleText,indent: 0,endIndent: 0,),
+                      Divider(color: AppColors.lightGreyBorder,indent: 0,endIndent: 0,),
                       RichText(
                         text: TextSpan(
                           children: [
                             TextSpan(text: 'Deadline:\t\t',style: TextStyle(color: Colors.grey.shade700,fontWeight: FontWeight.w500)),
-                            TextSpan(text: taskModel.deadline.toString(),style: AppConstants.thinText.copyWith(fontSize: 14,),)
+                            TextSpan(text: taskModel.deadline!.format(context).toString(),style: AppConstants.thinText.copyWith(fontSize: 14,),)
                           ],
                           
                           )

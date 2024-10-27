@@ -15,7 +15,7 @@ class TaskModel {
     return TaskModel(
       title: json['title'],
       status: json['status'] ?? false,
-      deadline: json['deadline'],
+      deadline: json['deadline'] as TimeOfDay,
       description: json['description'] ?? '',      
     );
   }
@@ -24,7 +24,7 @@ class TaskModel {
     final Map<String,dynamic> data = Map<String,dynamic>();
     data['title'] = title;
     data['status'] = status ?? false;
-    data['deadline'] = deadline;
+    data['deadline'] = deadline.toString();
     data['description'] = description;
 
     return data;
