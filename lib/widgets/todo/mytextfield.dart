@@ -24,7 +24,7 @@ class Mytextfield extends StatelessWidget {
         hintText: hintText,
       ),
       onChanged: (value) {
-        print(value);
+        //print(value);
       },
     );
   }

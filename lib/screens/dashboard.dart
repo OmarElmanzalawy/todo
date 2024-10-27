@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/constants/app_theme_data.dart';
+import 'package:todo/service/startup_service.dart';
 import 'package:todo/utils/clippers/rounded_clipper.dart';
 import 'package:todo/widgets/dashboard/circle_Icon.dart';
 import 'package:todo/widgets/dashboard/dash_task.dart';
 import 'package:todo/widgets/dashboard/rounded_card.dart';
 
-class DashBoardScreen extends StatelessWidget {
+class DashBoardScreen extends ConsumerStatefulWidget {
   const DashBoardScreen({super.key});
+
+  @override
+  ConsumerState<DashBoardScreen> createState() => _DashBoardScreenState();
+}
+
+class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    StartupService.loadLocalData(ref);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +21,7 @@ class TasksProvider extends StateNotifier<TasksState>{
     //final storage =  getIt<StorageService>();
     final prefs = await SharedPreferences.getInstance();
     final taskList = [...state.tasksList,taskModel];
-    final stringList = taskList.map((task)=> task.toString()).toList();
+    final stringList = taskList.map((task)=> jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
     state = state.copywith(tasksList: taskList);
   }
@@ -28,20 +30,19 @@ class TasksProvider extends StateNotifier<TasksState>{
     final prefs = await SharedPreferences.getInstance();
     List<TaskModel> taskList = state.tasksList;
     taskList.removeWhere((task)=> task==taskmodel);
-    final stringList = taskList.map((task)=> task.toString()).toList();
+    final stringList = taskList.map((task)=> jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
     state = state.copywith(tasksList: taskList);
-    print(taskList);
+    print(stringList);
   }
 
-  Future<void> editTask(TaskModel taskModel,{TextEditingController? titleController, TextEditingController? descriptionController})async{
-    final prefs =await SharedPreferences.getInstance();
-    titleController!.text = taskModel.title ?? '';
-    descriptionController!.text = taskModel.description ?? '';
+  Future<void> editTask(TaskModel taskModel,{required TextEditingController titleController,required TextEditingController descriptionController})async{
+    final prefs = await SharedPreferences.getInstance();
     final List<TaskModel> tasks = state.tasksList;
     final int index = tasks.indexWhere((element)=> element.id == taskModel.id);
-    tasks[index] = TaskModel(title: titleController!.text,description: descriptionController!.text);
-    final stringList = tasks.map((task)=> task.toString()).toList();
+    tasks[index] = TaskModel(title: titleController.text,description: descriptionController.text);
+    print('After editing: ${tasks[index].title}, textfield: ${titleController.text}');
+    final stringList = tasks.map((task)=> jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
     state = state.copywith(tasksList: tasks);
   }
@@ -53,11 +54,12 @@ class TasksProvider extends StateNotifier<TasksState>{
   }
 
   Future<void> loadTasks()async{
+    print('LOADING....\n');
     final prefs = await SharedPreferences.getInstance();
-    final stringList = prefs.getStringList(tasksKey);
-    //TODO: CONVERT STRING LISTS IN EVERY FUNCTION INTO JSON FORMAT INSTEAD OF TOSTRING 
-    // THEN DECODE IT USING FROMJSON 
-    //final updatedList = stringList.map((task)=> )
+    final stringList = prefs.getStringList(tasksKey) ?? [];
+    final updatedList = stringList.map((task)=> TaskModel.fromJson(jsonDecode(task))).toList();
+    state = state.copywith(tasksList: updatedList);
+    print('LOADED TASKS: $updatedList');
   }
 
 }
