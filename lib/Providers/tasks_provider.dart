@@ -8,58 +8,64 @@ import 'package:todo/models/task_model.dart';
 import 'package:todo/service/init_getit.dart';
 import 'package:todo/service/storage_service.dart';
 
-final tasksProvider = StateNotifierProvider<TasksProvider,TasksState>((ref) {
+final tasksProvider = StateNotifierProvider<TasksProvider, TasksState>((ref) {
   return TasksProvider();
 });
 
-class TasksProvider extends StateNotifier<TasksState>{
-  TasksProvider():super(TasksState());
+class TasksProvider extends StateNotifier<TasksState> {
+  TasksProvider() : super(TasksState());
 
   final String tasksKey = 'tasksKey';
 
-  Future<void> addTasks(TaskModel taskModel)async{
+  Future<void> addTasks(TaskModel taskModel) async {
     //final storage =  getIt<StorageService>();
     final prefs = await SharedPreferences.getInstance();
-    final taskList = [...state.tasksList,taskModel];
-    final stringList = taskList.map((task)=> jsonEncode(task.toJson())).toList();
+    final taskList = [...state.tasksList, taskModel];
+    final stringList =
+        taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
     state = state.copywith(tasksList: taskList);
   }
 
-  Future<void> deleteTask(TaskModel taskmodel)async{
+  Future<void> deleteTask(TaskModel taskmodel) async {
     final prefs = await SharedPreferences.getInstance();
     List<TaskModel> taskList = state.tasksList;
-    taskList.removeWhere((task)=> task==taskmodel);
-    final stringList = taskList.map((task)=> jsonEncode(task.toJson())).toList();
+    taskList.removeWhere((task) => task == taskmodel);
+    final stringList =
+        taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
     state = state.copywith(tasksList: taskList);
     print(stringList);
   }
 
-  Future<void> editTask(TaskModel taskModel,{required TextEditingController titleController,required TextEditingController descriptionController})async{
+  Future<void> editTask(TaskModel taskModel,
+      {required TextEditingController titleController,
+      required TextEditingController descriptionController}) async {
     final prefs = await SharedPreferences.getInstance();
     final List<TaskModel> tasks = state.tasksList;
-    final int index = tasks.indexWhere((element)=> element.id == taskModel.id);
-    tasks[index] = TaskModel(title: titleController.text,description: descriptionController.text);
-    print('After editing: ${tasks[index].title}, textfield: ${titleController.text}');
-    final stringList = tasks.map((task)=> jsonEncode(task.toJson())).toList();
+    final int index = tasks.indexWhere((element) => element.id == taskModel.id);
+    tasks[index] = TaskModel(
+        title: titleController.text, description: descriptionController.text);
+    print(
+        'After editing: ${tasks[index].title}, textfield: ${titleController.text}');
+    final stringList = tasks.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
     state = state.copywith(tasksList: tasks);
   }
 
-  Future<void> clearTasks()async{
+  Future<void> clearTasks() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setStringList(tasksKey, []);
     state = state.copywith(tasksList: []);
   }
 
-  Future<void> loadTasks()async{
+  Future<void> loadTasks() async {
     print('LOADING....\n');
     final prefs = await SharedPreferences.getInstance();
     final stringList = prefs.getStringList(tasksKey) ?? [];
-    final updatedList = stringList.map((task)=> TaskModel.fromJson(jsonDecode(task))).toList();
+    final updatedList =
+        stringList.map((task) => TaskModel.fromJson(jsonDecode(task))).toList();
     state = state.copywith(tasksList: updatedList);
     print('LOADED TASKS: $updatedList');
   }
-
 }

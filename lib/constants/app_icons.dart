@@ -8,5 +8,6 @@ class AppIcons{
   static const IconData nextArrow = Icons.arrow_forward_ios;
   static const IconData tick = Icons.check;
   static const IconData delete = Icons.delete;
+  static const IconData alarm = Icons.alarm;
 }
 

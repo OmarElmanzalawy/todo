@@ -73,7 +73,7 @@ class TodoScreen extends ConsumerWidget {
                       style: ButtonStyle(
                           splashFactory: NoSplash.splashFactory,
                           backgroundColor: WidgetStatePropertyAll(
-                              AppColors.darkGreen.withOpacity(0.5)),
+                              AppColors.darkGreen.withOpacity(0.7)),
                           textStyle: WidgetStatePropertyAll(
                               TextStyle(color: AppColors.primaryText)),
                           shape: WidgetStatePropertyAll(

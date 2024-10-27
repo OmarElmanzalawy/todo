@@ -5,7 +5,7 @@ class TaskModel {
   final String title;
   final bool? status;
   final String? description;
-  final DateTime? deadline;
+  final TimeOfDay? deadline;
   //WILL CAUSE PROBLEMS LATER
   final UniqueKey id = UniqueKey();
 

@@ -9,6 +9,23 @@ static final ThemeData mainTheme = ThemeData.light().copyWith(
       backgroundColor: AppColors.primaryText,
       iconTheme: IconThemeData(color: AppColors.primaryText)
     ),
+    timePickerTheme: TimePickerThemeData(
+      backgroundColor: Colors.white,
+      dialBackgroundColor: AppColors.darkGreen,
+      dialHandColor: AppColors.lightGreen,
+      dialTextColor: AppColors.primaryText,
+
+      confirmButtonStyle: ButtonStyle(foregroundColor: WidgetStatePropertyAll(AppColors.darkGreen)),
+      cancelButtonStyle: ButtonStyle(foregroundColor: WidgetStatePropertyAll(AppColors.darkGreen)),
+
+      hourMinuteColor: AppColors.darkGreen,
+      hourMinuteTextColor: AppColors.primaryText,
+      
+      dayPeriodColor: AppColors.darkestGreen,
+      dayPeriodTextColor: Colors.grey.shade500,
+      //dayPeriodShape: RoundedRectangleBorder(side: BorderSide.none)
+      
+    ),
     scaffoldBackgroundColor: AppColors.primaryText,
     colorScheme: ColorScheme.light(surface: Color.fromARGB(26, 13, 184, 247))
   );
