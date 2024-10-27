@@ -34,7 +34,6 @@ final TextEditingController descriptionController = TextEditingController();
                       children: [
                         Mytextfield(hintText: widget.taskModel.title??'',controller: taskController,),
                         Mytextfield(hintText: widget.taskModel.description??'',fontSize: 16,textColor: AppColors.subtitleText,controller: descriptionController,),
-                        //SizedBox(height: 60,),
                         SizedBox(height: size.height * 0.03,),
                         Align(
                           alignment: Alignment.bottomRight,

@@ -54,8 +54,7 @@ TimeOfDay? deadlineTime;
                             ),
                           ],
                         ),
-                        SizedBox(height: size.height * 0.03,),
-                        //SizedBox(height: 30,),
+                        SizedBox(height: size.height * 0.025,),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Padding(
