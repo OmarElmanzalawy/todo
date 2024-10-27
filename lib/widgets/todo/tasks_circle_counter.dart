@@ -10,6 +10,7 @@ class TasksCircleCounter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context,WidgetRef ref) {
+    final Size size = MediaQuery.sizeOf(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 30.0),
       child: Column(
@@ -17,36 +18,39 @@ class TasksCircleCounter extends ConsumerWidget {
           Stack(
                     alignment: Alignment.center,
                     children: [
-                      DottedBorder(
-                        padding: EdgeInsets.all(0),
-                        borderType: BorderType.Circle,
-                        strokeCap: StrokeCap.square,
-                        strokeWidth: 5,
-                        color: AppColors.primaryText,
-                        child: Container(
-                          height: 220,
-                          width: 220,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('7',style: AppConstants.taskCircleCounterStyle),
-                              Divider(thickness: 2,color: AppColors.primaryText,indent: 25,endIndent: 25,),
-                              Text(
-                                  '12',
-                                  //ref.read(tasksProvider).tasksList.length.toString(),
-                                  style: AppConstants.taskCircleCounterStyle,
-                                  )
-                            ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: DottedBorder(
+                          padding: EdgeInsets.all(0),
+                          borderType: BorderType.Circle,
+                          strokeCap: StrokeCap.square,
+                          strokeWidth: 5,
+                          color: AppColors.primaryText,
+                          child: Container(
+                            height: size.height*0.23,
+                            width: size.width*0.51,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('7',style: AppConstants.taskCircleCounterStyle),
+                                Divider(thickness: 2,color: AppColors.primaryText,indent: 25,endIndent: 25,),
+                                Text(
+                                    '12',
+                                    //ref.read(tasksProvider).tasksList.length.toString(),
+                                    style: AppConstants.taskCircleCounterStyle,
+                                    )
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ]
                   ),
-                  SizedBox(height: 30,),
+                  SizedBox(height: size.height*0.03,),
                   Center(
                     child: Text('Amost There!',style: AppConstants.thinText.copyWith(color: AppColors.primaryText,fontSize: 20),),
                   )

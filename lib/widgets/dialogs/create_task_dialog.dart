@@ -24,8 +24,9 @@ TimeOfDay? deadlineTime;
 
   @override
   Widget build(BuildContext context) {
+     final Size size = MediaQuery.sizeOf(context);
                        return Container(
-                    height: 250,
+                    height: size.height*0.27,
                     color: AppColors.primaryText,
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -46,7 +47,6 @@ TimeOfDay? deadlineTime;
                                  initialTime: TimeOfDay.now(),
                                  //initialEntryMode: TimePickerEntryMode.input,
                                  barrierColor: Colors.transparent,
-
                                  ).then((value) =>setState(() {
                                    deadlineTime= value;
                                  }) );
@@ -54,7 +54,8 @@ TimeOfDay? deadlineTime;
                             ),
                           ],
                         ),
-                        SizedBox(height: 30,),
+                        SizedBox(height: size.height * 0.03,),
+                        //SizedBox(height: 30,),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Padding(

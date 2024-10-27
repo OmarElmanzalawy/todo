@@ -14,7 +14,7 @@ class TaskModel {
   factory TaskModel.fromJson(Map<String,dynamic> json){
     return TaskModel(
       title: json['title'],
-      status: json['status'] ?? false,
+      status: json['status'] ?? false,   
       deadline: json['deadline'] as TimeOfDay,
       description: json['description'] ?? '',      
     );

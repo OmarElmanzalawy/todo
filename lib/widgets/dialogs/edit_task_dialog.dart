@@ -24,8 +24,9 @@ final TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-                       return Container(
-                    height: 250,
+    final Size size = MediaQuery.sizeOf(context);
+                    return Container(
+                    height: size.height*0.27,
                     color: AppColors.primaryText,
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -33,7 +34,8 @@ final TextEditingController descriptionController = TextEditingController();
                       children: [
                         Mytextfield(hintText: widget.taskModel.title??'',controller: taskController,),
                         Mytextfield(hintText: widget.taskModel.description??'',fontSize: 16,textColor: AppColors.subtitleText,controller: descriptionController,),
-                        SizedBox(height: 60,),
+                        //SizedBox(height: 60,),
+                        SizedBox(height: size.height * 0.03,),
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Padding(
@@ -46,7 +48,6 @@ final TextEditingController descriptionController = TextEditingController();
                             ),
                           ),
                         )
-                      
                       ],
                                               ),
                     ),

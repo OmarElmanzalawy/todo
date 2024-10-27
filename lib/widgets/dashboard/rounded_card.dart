@@ -18,9 +18,10 @@ class RoundedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.sizeOf(context);
     return Container(
-      height: height ?? 100,
-      width: width ?? double.infinity,
+      height: height ?? size.height * 0.32,
+      width: width ?? size.width,
       decoration: BoxDecoration(
           color: backgroundColor ?? AppColors.lightGreen,
           borderRadius: borderRadius ??

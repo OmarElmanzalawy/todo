@@ -36,8 +36,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
         body: Stack(
           children: [
             Container(
-              width: double.infinity,
-              height: double.infinity,
+              width: size.width,
+              height: size.height,
               decoration: const BoxDecoration(
                   gradient: LinearGradient(
                       colors: [AppColors.darkGreen, AppColors.darkestGreen])),
@@ -68,7 +68,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   Container(
                     color: Colors.transparent,
                     width: double.infinity,
-                    height: 220,
+                    height: size.height * 0.29,
                     child: const Padding(
                       padding: EdgeInsets.only(left: 15.0, top: 30, bottom: 15),
                       child: Column(
@@ -79,7 +79,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                             style: TextStyle(color: AppColors.lightGreen),
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 12.0),
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
                             child: Text('Good Morning,\nTime To Work!',
                                 style: AppConstants.h1Text),
                           ),
@@ -90,7 +90,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: RoundedCard(
-                      height: 250,
+                      height: size.height * 0.31,
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Column(
@@ -164,7 +164,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     topLeft: Radius.circular(40),
                     topRight: Radius.circular(40)),
                 backgroundColor: AppColors.primaryText,
-                height: 300,
+                height: size.height * 0.34,
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
                   child: Column(
