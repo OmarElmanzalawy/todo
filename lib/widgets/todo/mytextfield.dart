@@ -9,23 +9,28 @@ class Mytextfield extends StatelessWidget {
   final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      showCursor: false,
-      controller: controller,
-      cursorColor: AppColors.fadedBlack,
-      style: TextStyle(fontSize: fontSize ??25,color: textColor),
-      decoration: InputDecoration(
-        
-        contentPadding: EdgeInsets.all(0),
-        border: OutlineInputBorder(
-          borderSide: BorderSide.none,
+    final size = MediaQuery.sizeOf(context);
+    return Container(
+      width: size.width,
+      //color: Colors.red,
+      child: TextField(
+        maxLines: 2,
+        showCursor: false,
+        controller: controller,
+        cursorColor: AppColors.fadedBlack,
+        style: TextStyle(fontSize: fontSize ??25,color: textColor),
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(0),
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+          ),
+          hintStyle: TextStyle(color: textColor),
+          hintText: hintText,
         ),
-        hintStyle: TextStyle(color: textColor),
-        hintText: hintText,
+        onChanged: (value) {
+          //print(value);
+        },
       ),
-      onChanged: (value) {
-        //print(value);
-      },
     );
   }
 }

@@ -9,6 +9,7 @@ import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/service/dialogue_service.dart';
 import 'package:todo/service/init_getit.dart';
+import 'package:todo/widgets/dialogs/create_task_bottom_sheet.dart';
 import 'package:todo/widgets/dialogs/create_task_dialog.dart';
 import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
@@ -29,8 +30,8 @@ class TodoScreen extends ConsumerWidget {
       resizeToAvoidBottomInset: true,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //TODO: DISPLAY DIALOGUE
-          getIt<DialogueService>().showDialog(CreateTaskDialog(), context);
+          //getIt<DialogueService>().showDialog(CreateTaskDialog(), context);
+        getIt<DialogueService>().showBottomSheet(CreateTaskBottomSheet(), context);
         },
         backgroundColor: AppColors.floatingButton,
         foregroundColor: Colors.white,

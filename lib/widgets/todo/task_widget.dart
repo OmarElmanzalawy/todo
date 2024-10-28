@@ -5,6 +5,7 @@ import 'package:todo/models/task_model.dart';
 import 'package:todo/service/dialogue_service.dart';
 import 'package:todo/service/init_getit.dart';
 import 'package:todo/widgets/dashboard/task_circle.dart';
+import 'package:todo/widgets/dialogs/edit_task_bottom_sheet.dart';
 import 'package:todo/widgets/dialogs/edit_task_dialog.dart';
 
 class TaskWidget extends StatelessWidget {
@@ -18,7 +19,7 @@ class TaskWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        getIt<DialogueService>().showDialog(EditTaskDialog(taskModel: taskModel,), context);
+        getIt<DialogueService>().showBottomSheet(EditTaskBottomSheet(taskModel: taskModel,), context);
       },
       child: Container(
         constraints: BoxConstraints(minHeight: 75),

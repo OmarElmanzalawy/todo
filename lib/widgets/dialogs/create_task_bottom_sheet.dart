@@ -8,28 +8,29 @@ import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/my_action_chip.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
 
-class CreateTaskDialog extends ConsumerStatefulWidget {
-  const CreateTaskDialog({super.key});
+class CreateTaskBottomSheet extends ConsumerStatefulWidget {
+  const CreateTaskBottomSheet({super.key});
 
   @override
-  ConsumerState<CreateTaskDialog> createState() => _CreateTaskDialogState();
+  ConsumerState<CreateTaskBottomSheet> createState() => _CreateTaskBottomSheetState();
 }
 
-class _CreateTaskDialogState extends ConsumerState<CreateTaskDialog> {
+class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
   final TextEditingController taskController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
   TimeOfDay? deadlineTime;
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     return Container(
-      height: size.height * 0.27,
-      color: AppColors.primaryText,
+      height: size.height * 0.45,
+      width: size.width,
+      //color: AppColors.primaryText,
       child: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Mytextfield(
               hintText: 'Task Name',
@@ -41,6 +42,7 @@ class _CreateTaskDialogState extends ConsumerState<CreateTaskDialog> {
               textColor: AppColors.subtitleText,
               controller: descriptionController,
             ),
+            SizedBox(height: 20,),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -66,10 +68,11 @@ class _CreateTaskDialogState extends ConsumerState<CreateTaskDialog> {
             SizedBox(
               height: size.height * 0.025,
             ),
+            Spacer(),
             Align(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.centerRight,
               child: Padding(
-                padding: const EdgeInsets.only(right: 12.0),
+                padding: const EdgeInsets.only(right: 0.0,bottom: 12),
                 child: ConfirmBox(
                   ontap: () {
                     ref.read(tasksProvider.notifier).addTasks(TaskModel(
@@ -80,7 +83,7 @@ class _CreateTaskDialogState extends ConsumerState<CreateTaskDialog> {
                   },
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
