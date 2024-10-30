@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
+import 'package:todo/constants/app_constants.dart';
+import 'package:todo/constants/app_icons.dart';
+import 'package:todo/models/task_model.dart';
 
-class TaskCircle extends StatelessWidget {
-  const TaskCircle({super.key});
+class TaskCircle extends ConsumerWidget {
+  const TaskCircle({super.key,required this.taskmodel});
+
+  //TODO MAKE IT REQUIRED LATER
+  final TaskModel taskmodel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final provider = ref.watch(tasksProvider);
     return InkWell(
       onTap: (){
-        print('Task Done');
+        ref.read(tasksProvider.notifier).completeTask(taskmodel);
       },
       child: Container(
         width: 32,
@@ -16,7 +25,9 @@ class TaskCircle extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.lightGreyBorder),
           shape: BoxShape.circle,
+          color: taskmodel.status == TaskStatus.finished ? AppColors.darkGreen : AppColors.primaryText
         ),
+        child: taskmodel.status == TaskStatus.finished ?  Icon(AppIcons.tick,color: AppColors.primaryText,) : null
       ),
     );
   }

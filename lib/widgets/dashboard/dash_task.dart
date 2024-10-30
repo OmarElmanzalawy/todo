@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
+import 'package:todo/models/task_model.dart';
 import 'package:todo/widgets/dashboard/task_circle.dart';
 
 class DashTask extends StatelessWidget {
@@ -37,7 +38,8 @@ class DashTask extends StatelessWidget {
             SizedBox(height: 35,),
             Align(
               alignment: Alignment.bottomRight,
-              child: TaskCircle(),
+              //PLACEHOLDER TASK MODEL
+              child: TaskCircle(taskmodel: TaskModel(title: 'title'),),
             ),
           ],
         ),

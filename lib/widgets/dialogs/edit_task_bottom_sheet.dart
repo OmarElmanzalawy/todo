@@ -22,13 +22,14 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
   final TextEditingController descriptionController = TextEditingController();
 
   TimeOfDay? deadlineTime;
+  //TODO: FIX EDIT DEADLINE LOGIC
 
   @override
   Widget build(BuildContext context) {
+    //deadlineTime = widget.taskModel.deadline != null ? widget.taskModel.deadline as TimeOfDay : null;
     final Size size = MediaQuery.sizeOf(context);
     return Container(
       height: size.height * 0.45,
-      //color: AppColors.primaryText,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -50,8 +51,8 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 MyActionChip(
-                  label: Text(deadlineTime != null
-                      ? deadlineTime!.format(context).toString()
+                  label: Text(widget.taskModel.deadline != null
+                      ? widget.taskModel.deadline!
                       : 'Deadline?'),
                   backgroundColor: Colors.grey.shade100,
                   icon: Icon(AppIcons.alarm, color: Colors.black),
@@ -80,7 +81,9 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
                   ontap: () {
                     ref.read(tasksProvider.notifier).editTask(widget.taskModel,
                         titleController: taskController,
-                        descriptionController: descriptionController);
+                        descriptionController: descriptionController,
+                        deadline: deadlineTime!= null ? deadlineTime.toString() : widget.taskModel.deadline ?? null
+                        );
                     Navigator.pop(context);
                   },
                 ),

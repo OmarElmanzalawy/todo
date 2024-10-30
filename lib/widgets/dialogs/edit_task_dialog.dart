@@ -6,8 +6,8 @@ import 'package:todo/models/task_model.dart';
 import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
 
-class EditTaskDialog extends ConsumerStatefulWidget  {
-  const EditTaskDialog({super.key,required this.taskModel});
+class EditTaskDialog extends ConsumerStatefulWidget {
+  const EditTaskDialog({super.key, required this.taskModel});
   final TaskModel taskModel;
 
   @override
@@ -15,41 +15,49 @@ class EditTaskDialog extends ConsumerStatefulWidget  {
 }
 
 class _EditTaskDialogState extends ConsumerState<EditTaskDialog> {
-
-final TextEditingController taskController = TextEditingController();
-final TextEditingController descriptionController = TextEditingController();
-
-
-
+  final TextEditingController taskController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
-                    return Container(
-                    height: size.height*0.27,
-                    color: AppColors.primaryText,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Column(
-                      children: [
-                        Mytextfield(hintText: widget.taskModel.title??'',controller: taskController,),
-                        Mytextfield(hintText: widget.taskModel.description??'',fontSize: 16,textColor: AppColors.subtitleText,controller: descriptionController,),
-                        SizedBox(height: size.height * 0.03,),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 12.0),
-                            child: ConfirmBox(
-                              ontap: (){
-                                  ref.read(tasksProvider.notifier).editTask(widget.taskModel, titleController: taskController,descriptionController: descriptionController);
-                                  Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                                              ),
-                    ),
-                  );
+    return Container(
+      height: size.height * 0.27,
+      color: AppColors.primaryText,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            Mytextfield(
+              hintText: widget.taskModel.title ?? '',
+              controller: taskController,
+            ),
+            Mytextfield(
+              hintText: widget.taskModel.description ?? '',
+              fontSize: 16,
+              textColor: AppColors.subtitleText,
+              controller: descriptionController,
+            ),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 12.0),
+                child: ConfirmBox(
+                  ontap: () {
+                    ref.read(tasksProvider.notifier).editTask(widget.taskModel,
+                        titleController: taskController,
+                        descriptionController: descriptionController);
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

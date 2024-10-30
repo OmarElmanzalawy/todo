@@ -75,7 +75,7 @@ class _CreateTaskDialogState extends ConsumerState<CreateTaskDialog> {
                     ref.read(tasksProvider.notifier).addTasks(TaskModel(
                         title: taskController.text,
                         description: descriptionController.text,
-                        deadline: deadlineTime));
+                        deadline: deadlineTime!.format(context)));
                     Navigator.pop(context);
                   },
                 ),

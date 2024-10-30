@@ -39,7 +39,7 @@ class TaskWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(taskModel.title,style: AppConstants.taskTitleStyle.copyWith(fontWeight: FontWeight.normal,fontSize: 18),),
-                  TaskCircle()
+                  TaskCircle(taskmodel: taskModel,)
                 ],
               ),
               taskModel.description != null ? Text(
@@ -57,7 +57,7 @@ class TaskWidget extends StatelessWidget {
                         text: TextSpan(
                           children: [
                             TextSpan(text: 'Deadline:\t\t',style: TextStyle(color: Colors.grey.shade700,fontWeight: FontWeight.w500)),
-                            TextSpan(text: taskModel.deadline!.format(context).toString(),style: AppConstants.thinText.copyWith(fontSize: 14,),)
+                            TextSpan(text: taskModel.deadline!,style: AppConstants.thinText.copyWith(fontSize: 14,),)
                           ],
                           
                           )

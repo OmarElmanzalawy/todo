@@ -26,7 +26,6 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
     return Container(
       height: size.height * 0.45,
       width: size.width,
-      //color: AppColors.primaryText,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -78,7 +77,7 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
                     ref.read(tasksProvider.notifier).addTasks(TaskModel(
                         title: taskController.text,
                         description: descriptionController.text,
-                        deadline: deadlineTime));
+                        deadline:  deadlineTime!.format(context).toString()));
                     Navigator.pop(context);
                   },
                 ),
