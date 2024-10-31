@@ -4,6 +4,7 @@ import 'package:todo/constants/app_constants.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/service/dialogue_service.dart';
 import 'package:todo/service/init_getit.dart';
+import 'package:todo/utils/clippers/app_utils.dart';
 import 'package:todo/widgets/dashboard/task_circle.dart';
 import 'package:todo/widgets/dialogs/edit_task_bottom_sheet.dart';
 import 'package:todo/widgets/dialogs/edit_task_dialog.dart';
@@ -38,7 +39,7 @@ class TaskWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(taskModel.title,style: AppConstants.taskTitleStyle.copyWith(fontWeight: FontWeight.normal,fontSize: 18),),
+                  Text(taskModel.title,style: AppConstants.taskTitleStyle.copyWith(fontWeight: FontWeight.normal,fontSize: 18,decoration: taskModel.status==TaskStatus.finished ? TextDecoration.lineThrough : TextDecoration.none),),
                   TaskCircle(taskmodel: taskModel,)
                 ],
               ),
@@ -57,11 +58,9 @@ class TaskWidget extends StatelessWidget {
                         text: TextSpan(
                           children: [
                             TextSpan(text: 'Deadline:\t\t',style: TextStyle(color: Colors.grey.shade700,fontWeight: FontWeight.w500)),
-                            TextSpan(text: taskModel.deadline!,style: AppConstants.thinText.copyWith(fontSize: 14,),)
+                            TextSpan(text: AppUtils.timeOfDayToString(taskModel.deadline!),style: AppConstants.thinText.copyWith(fontSize: 14,),)
                           ],
-                          
-                          )
-                        
+                          ),
                         )
                     ],
                   ),

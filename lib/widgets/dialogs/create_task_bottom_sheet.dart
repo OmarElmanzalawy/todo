@@ -77,7 +77,8 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
                     ref.read(tasksProvider.notifier).addTasks(TaskModel(
                         title: taskController.text,
                         description: descriptionController.text,
-                        deadline:  deadlineTime!.format(context).toString()));
+                        deadline:  deadlineTime,
+                        ));
                     Navigator.pop(context);
                   },
                 ),

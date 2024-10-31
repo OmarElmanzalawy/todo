@@ -44,7 +44,7 @@ class TasksProvider extends StateNotifier<TasksState> {
   Future<void> editTask(TaskModel taskModel,
       {required TextEditingController titleController,
       required TextEditingController descriptionController,
-      String? deadline,
+      TimeOfDay? deadline,
       }) async {
     final prefs = await SharedPreferences.getInstance();
     final List<TaskModel> tasks = state.tasksList;

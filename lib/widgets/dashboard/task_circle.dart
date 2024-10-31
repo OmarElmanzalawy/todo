@@ -16,8 +16,13 @@ class TaskCircle extends ConsumerWidget {
   Widget build(BuildContext context,WidgetRef ref) {
     final provider = ref.watch(tasksProvider);
     return InkWell(
-      onTap: (){
+      onTap: ()async{
         ref.read(tasksProvider.notifier).completeTask(taskmodel);
+        Future.delayed(const Duration(seconds: 2),(){
+          //IMPLEMENT ANIMATION THEN DELETE TASK
+          print('deleted after 2 seconds');
+          ref.read(tasksProvider.notifier).deleteTask(taskmodel);
+        });
       },
       child: Container(
         width: 32,

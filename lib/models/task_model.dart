@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_constants.dart';
+import 'package:todo/utils/clippers/app_utils.dart';
 
 class TaskModel {
   final String title;
   TaskStatus status;
   final String? description;
-  final String? deadline;
+  final TimeOfDay? deadline;
   //WILL CAUSE PROBLEMS LATER
   final UniqueKey id = UniqueKey();
 
@@ -32,7 +33,7 @@ class TaskModel {
     return TaskModel(
       title: json['title'],
       status: getTaskStatusFromString(json['status'])!,
-      deadline: json['deadline'] != null ? json['deadline'] : null,
+      deadline: json['deadline'] != null ? AppUtils.stringToTimeOfDay(json['deadline']): null,
       description: json['description'] ?? '',
     );
   }
@@ -41,7 +42,7 @@ class TaskModel {
     final Map<String, dynamic> data = Map<String, dynamic>();
     data['title'] = title;
     data['status'] = status.toString();
-    data['deadline'] = deadline;
+    deadline != null ? data['deadline'] = AppUtils.timeOfDayToString(deadline!): null;
     data['description'] = description;
 
     return data;

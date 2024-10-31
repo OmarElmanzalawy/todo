@@ -4,6 +4,7 @@ import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/utils/clippers/app_utils.dart';
 import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/my_action_chip.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
@@ -25,8 +26,17 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
   //TODO: FIX EDIT DEADLINE LOGIC
 
   @override
+  void initState() {
+    TimeOfDay? deadlineTime = widget.taskModel.deadline != null ? widget.taskModel.deadline : null;
+    time = deadlineTime;
+    super.initState();
+  }
+
+  TimeOfDay? time;
+
+  @override
   Widget build(BuildContext context) {
-    //deadlineTime = widget.taskModel.deadline != null ? widget.taskModel.deadline as TimeOfDay : null;
+    
     final Size size = MediaQuery.sizeOf(context);
     return Container(
       height: size.height * 0.45,
@@ -51,8 +61,8 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 MyActionChip(
-                  label: Text(widget.taskModel.deadline != null
-                      ? widget.taskModel.deadline!
+                  label: Text(time != null
+                      ? AppUtils.timeOfDayToString(time!)
                       : 'Deadline?'),
                   backgroundColor: Colors.grey.shade100,
                   icon: Icon(AppIcons.alarm, color: Colors.black),
@@ -63,7 +73,7 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
                       //initialEntryMode: TimePickerEntryMode.input,
                       barrierColor: Colors.transparent,
                     ).then((value) => setState(() {
-                          deadlineTime = value;
+                          time = value;
                         }));
                   },
                 ),
@@ -79,10 +89,11 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
                 padding: const EdgeInsets.only(right: 12.0, bottom: 12),
                 child: ConfirmBox(
                   ontap: () {
-                    ref.read(tasksProvider.notifier).editTask(widget.taskModel,
+                    ref.read(tasksProvider.notifier).editTask(
+                        widget.taskModel,
                         titleController: taskController,
                         descriptionController: descriptionController,
-                        deadline: deadlineTime!= null ? deadlineTime.toString() : widget.taskModel.deadline ?? null
+                        deadline: time!= null ? time : widget.taskModel.deadline ?? null
                         );
                     Navigator.pop(context);
                   },
