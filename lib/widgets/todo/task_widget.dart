@@ -4,7 +4,7 @@ import 'package:todo/constants/app_constants.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/service/dialogue_service.dart';
 import 'package:todo/service/init_getit.dart';
-import 'package:todo/utils/clippers/app_utils.dart';
+import 'package:todo/utils/app_utils.dart';
 import 'package:todo/widgets/dashboard/task_circle.dart';
 import 'package:todo/widgets/dialogs/edit_task_bottom_sheet.dart';
 import 'package:todo/widgets/dialogs/edit_task_dialog.dart';

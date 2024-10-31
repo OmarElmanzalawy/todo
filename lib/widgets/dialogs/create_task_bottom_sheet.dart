@@ -24,7 +24,7 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
   TimeOfDay? deadlineTime;
   @override
   Widget build(BuildContext context) {
-    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS || Theme.of(context).platform == TargetPlatform.macOS;
     final Size size = MediaQuery.sizeOf(context);
     return Container(
       height: size.height * 0.45,

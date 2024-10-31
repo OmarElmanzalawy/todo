@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/constants/app_constants.dart';
-import 'package:todo/utils/clippers/app_utils.dart';
+import 'package:todo/utils/app_utils.dart';
 
 class TaskModel {
   final String title;

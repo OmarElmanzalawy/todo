@@ -5,7 +5,7 @@ import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
-import 'package:todo/utils/clippers/app_utils.dart';
+import 'package:todo/utils/app_utils.dart';
 import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/my_action_chip.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
@@ -35,11 +35,12 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+bool isIOS = Theme.of(context).platform == TargetPlatform.iOS || Theme.of(context).platform == TargetPlatform.macOS;
     isIOS ? print('ON IOS') : print('NOT ON IOS');
     final Size size = MediaQuery.sizeOf(context);
     return Container(
       height: size.height * 0.45,
+      width: size.width,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -88,7 +89,7 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
                                   onDateTimeChanged: (value){
                                     time = TimeOfDay.fromDateTime(value);
                                     setState(() {
-                                      
+                                      //CHANGE LATER
                                     });
                                     print(time);
                                   }),

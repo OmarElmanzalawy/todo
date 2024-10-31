@@ -40,12 +40,14 @@ class TodoScreen extends ConsumerWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            constraints:
-                BoxConstraints(minHeight: 200, minWidth: double.infinity),
-            decoration: BoxDecoration(color: AppColors.darkGreen),
-            //TODO ADD SOME KIND OF BACKGROUND WITH A BLUR EFFECT (IDEA)
-            child: TasksCircleCounter(),
+          Expanded(
+            child: Container(
+              constraints:
+                  BoxConstraints(minHeight: 200, minWidth: double.infinity),
+              decoration: BoxDecoration(color: AppColors.darkGreen),
+              //TODO ADD SOME KIND OF BACKGROUND WITH A BLUR EFFECT (IDEA)
+              child: TasksCircleCounter(),
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(top: 40, left: 15, right: 15),
