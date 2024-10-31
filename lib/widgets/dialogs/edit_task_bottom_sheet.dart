@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/tasks_provider.dart';
@@ -22,12 +23,10 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
   final TextEditingController taskController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
-  TimeOfDay? deadlineTime;
-  //TODO: FIX EDIT DEADLINE LOGIC
-
   @override
   void initState() {
-    TimeOfDay? deadlineTime = widget.taskModel.deadline != null ? widget.taskModel.deadline : null;
+    TimeOfDay? deadlineTime =
+        widget.taskModel.deadline != null ? widget.taskModel.deadline : null;
     time = deadlineTime;
     super.initState();
   }
@@ -36,7 +35,8 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+    isIOS ? print('ON IOS') : print('NOT ON IOS');
     final Size size = MediaQuery.sizeOf(context);
     return Container(
       height: size.height * 0.45,
@@ -61,22 +61,52 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 MyActionChip(
-                  label: Text(time != null
-                      ? AppUtils.timeOfDayToString(time!)
-                      : 'Deadline?'),
-                  backgroundColor: Colors.grey.shade100,
-                  icon: Icon(AppIcons.alarm, color: Colors.black),
-                  onpressed: () {
-                    showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                      //initialEntryMode: TimePickerEntryMode.input,
-                      barrierColor: Colors.transparent,
-                    ).then((value) => setState(() {
-                          time = value;
-                        }));
-                  },
-                ),
+                    label: Text(time != null
+                        ? AppUtils.timeOfDayToString(time!)
+                        : 'Deadline?'),
+                    backgroundColor: Colors.grey.shade100,
+                    icon: Icon(AppIcons.alarm, color: Colors.black),
+                    onpressed: () {
+                      if (isIOS) {
+                        showCupertinoModalPopup(
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                width: size.width,
+                                height: 216,
+                                padding: const EdgeInsets.only(top: 6.0),
+                                margin: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom,
+                                ),
+                              child: SafeArea(
+                                top: false,
+                                child: CupertinoDatePicker(
+
+                                  initialDateTime: DateTime.now(),
+                                  mode: CupertinoDatePickerMode.time,
+                                  onDateTimeChanged: (value){
+                                    time = TimeOfDay.fromDateTime(value);
+                                    setState(() {
+                                      
+                                    });
+                                    print(time);
+                                  }),
+                              ),
+                              );
+                            });
+                      } else {
+                        showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                          //initialEntryMode: TimePickerEntryMode.input,
+                          barrierColor: Colors.transparent,
+                        ).then((value) => setState(() {
+                              time = value;
+                            }));
+                      }
+                      ;
+                    }),
               ],
             ),
             SizedBox(
@@ -89,12 +119,12 @@ class _EditTaskBottomSheetState extends ConsumerState<EditTaskBottomSheet> {
                 padding: const EdgeInsets.only(right: 12.0, bottom: 12),
                 child: ConfirmBox(
                   ontap: () {
-                    ref.read(tasksProvider.notifier).editTask(
-                        widget.taskModel,
+                    ref.read(tasksProvider.notifier).editTask(widget.taskModel,
                         titleController: taskController,
                         descriptionController: descriptionController,
-                        deadline: time!= null ? time : widget.taskModel.deadline ?? null
-                        );
+                        deadline: time != null
+                            ? time
+                            : widget.taskModel.deadline ?? null);
                     Navigator.pop(context);
                   },
                 ),

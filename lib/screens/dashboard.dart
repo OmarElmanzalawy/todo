@@ -6,7 +6,6 @@ import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/constants/app_theme_data.dart';
 import 'package:todo/service/startup_service.dart';
-import 'package:todo/utils/clippers/rounded_clipper.dart';
 import 'package:todo/widgets/dashboard/circle_Icon.dart';
 import 'package:todo/widgets/dashboard/dash_task.dart';
 import 'package:todo/widgets/dashboard/rounded_card.dart';

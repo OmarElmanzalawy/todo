@@ -1,18 +1,12 @@
-import 'package:dotted_border/dotted_border.dart';
-import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
-import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/service/dialogue_service.dart';
 import 'package:todo/service/init_getit.dart';
 import 'package:todo/widgets/dialogs/create_task_bottom_sheet.dart';
-import 'package:todo/widgets/dialogs/create_task_dialog.dart';
-import 'package:todo/widgets/todo/confirm_box.dart';
-import 'package:todo/widgets/todo/mytextfield.dart';
 import 'package:todo/widgets/todo/task_widget.dart';
 import 'package:todo/widgets/todo/tasks_circle_counter.dart';
 

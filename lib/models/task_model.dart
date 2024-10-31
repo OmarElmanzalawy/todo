@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/utils/clippers/app_utils.dart';
 

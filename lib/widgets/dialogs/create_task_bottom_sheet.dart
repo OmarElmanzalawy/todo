@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/tasks_provider.dart';
@@ -12,7 +13,8 @@ class CreateTaskBottomSheet extends ConsumerStatefulWidget {
   const CreateTaskBottomSheet({super.key});
 
   @override
-  ConsumerState<CreateTaskBottomSheet> createState() => _CreateTaskBottomSheetState();
+  ConsumerState<CreateTaskBottomSheet> createState() =>
+      _CreateTaskBottomSheetState();
 }
 
 class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
@@ -22,6 +24,7 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
   TimeOfDay? deadlineTime;
   @override
   Widget build(BuildContext context) {
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     final Size size = MediaQuery.sizeOf(context);
     return Container(
       height: size.height * 0.45,
@@ -41,7 +44,9 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
               textColor: AppColors.subtitleText,
               controller: descriptionController,
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -52,14 +57,44 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
                   backgroundColor: Colors.grey.shade100,
                   icon: Icon(AppIcons.alarm, color: Colors.black),
                   onpressed: () {
-                    showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                      //initialEntryMode: TimePickerEntryMode.input,
-                      barrierColor: Colors.transparent,
-                    ).then((value) => setState(() {
-                          deadlineTime = value;
-                        }));
+                    if (isIOS) {
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                              width: size.width,
+                              height: 216,
+                              padding: const EdgeInsets.only(top: 6.0),
+                              margin: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).viewInsets.bottom,
+                              ),
+                              child: SafeArea(
+                                top: false,
+                                child: CupertinoDatePicker(
+                                    initialDateTime: DateTime.now(),
+                                    mode: CupertinoDatePickerMode.time,
+                                    onDateTimeChanged: (value) {
+                                      deadlineTime =
+                                          TimeOfDay.fromDateTime(value);
+                                      setState(() {
+                                        //CHANGE LATER
+                                      });
+                                      print(deadlineTime);
+                                    }),
+                              ),
+                            );
+                          });
+                    } else {
+                      showTimePicker(
+                        context: context,
+                        initialTime: TimeOfDay.now(),
+                        //initialEntryMode: TimePickerEntryMode.input,
+                        barrierColor: Colors.transparent,
+                      ).then((value) => setState(() {
+                            deadlineTime = value;
+                          }));
+                    }
                   },
                 ),
               ],
@@ -71,13 +106,13 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
-                padding: const EdgeInsets.only(right: 0.0,bottom: 12),
+                padding: const EdgeInsets.only(right: 0.0, bottom: 12),
                 child: ConfirmBox(
                   ontap: () {
                     ref.read(tasksProvider.notifier).addTasks(TaskModel(
-                        title: taskController.text,
-                        description: descriptionController.text,
-                        deadline:  deadlineTime,
+                          title: taskController.text,
+                          description: descriptionController.text,
+                          deadline: deadlineTime,
                         ));
                     Navigator.pop(context);
                   },

@@ -50,7 +50,6 @@ class _TaskCircleState extends ConsumerState<TaskCircle> with SingleTickerProvid
         _controller.forward();
         Future.delayed(const Duration(seconds: 1),(){
           //IMPLEMENT ANIMATION THEN DELETE TASK
-          print('deleted after 2 seconds');
           ref.read(tasksProvider.notifier).deleteTask(widget.taskmodel);
         });
       },

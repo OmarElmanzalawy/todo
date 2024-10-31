@@ -6,8 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/Providers/tasks_state.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/models/task_model.dart';
-import 'package:todo/service/init_getit.dart';
-import 'package:todo/service/storage_service.dart';
 
 final tasksProvider = StateNotifierProvider<TasksProvider, TasksState>((ref) {
   return TasksProvider();
