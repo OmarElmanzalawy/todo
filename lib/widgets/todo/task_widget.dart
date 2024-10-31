@@ -24,7 +24,7 @@ class TaskWidget extends StatelessWidget {
       },
       child: Container(
         constraints: BoxConstraints(minHeight: 75),
-        //height: 75,
+        height: taskModel.status == TaskStatus.finished ? 0 : null,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: AppColors.primaryText,
