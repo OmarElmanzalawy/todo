@@ -19,20 +19,12 @@ class TaskModel {
   });
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
-    //FUNCTION USED TO SERIALIZE TASKSTATUS ENUM INTO AND FROM JSON
-    TaskStatus? getTaskStatusFromString(String statusAsString) {
-      for (TaskStatus element in TaskStatus.values) {
-        if (element.toString() == statusAsString) {
-          return element;
-        }
-      }
-      return null;
-    }
+
 
     print('Dedline: ${json['deadline']}');
     return TaskModel(
       title: json['title'],
-      status: getTaskStatusFromString(json['status'])!,
+      status:  AppUtils.getTaskStatusFromString(json['status'])!,
       deadline: json['deadline'] != null ? AppUtils.stringToTimeOfDay(json['deadline']): null,
       description: json['description'] ?? '',
     );

@@ -16,8 +16,6 @@ final tasksProvider = StateNotifierProvider<TasksProvider, TasksState>((ref) {
 class TasksProvider extends StateNotifier<TasksState> {
   TasksProvider() : super(TasksState());
 
-
-
   final String tasksKey = 'tasksKey';
 
   Future<void> addTasks(TaskModel taskModel) async {
@@ -41,16 +39,19 @@ class TasksProvider extends StateNotifier<TasksState> {
     print(stringList);
   }
 
-  Future<void> editTask(TaskModel taskModel,
-      {required TextEditingController titleController,
-      required TextEditingController descriptionController,
-      TimeOfDay? deadline,
-      }) async {
+  Future<void> editTask(
+    TaskModel taskModel, {
+    required TextEditingController titleController,
+    required TextEditingController descriptionController,
+    TimeOfDay? deadline,
+  }) async {
     final prefs = await SharedPreferences.getInstance();
     final List<TaskModel> tasks = state.tasksList;
     final int index = tasks.indexWhere((element) => element.id == taskModel.id);
     tasks[index] = TaskModel(
-        title: titleController.text, description: descriptionController.text,deadline:deadline);
+        title: titleController.text,
+        description: descriptionController.text,
+        deadline: deadline);
     print(
         'After editing: ${tasks[index].title}, textfield: ${titleController.text}');
     final stringList = tasks.map((task) => jsonEncode(task.toJson())).toList();
@@ -74,19 +75,17 @@ class TasksProvider extends StateNotifier<TasksState> {
     print('LOADED TASKS: $updatedList');
   }
 
-  Future<void> completeTask(TaskModel taskModel,) async{
-
+  Future<void> completeTask(
+    TaskModel taskModel,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
     final taskList = state.tasksList;
 
-    final int index = taskList.indexWhere((task)=> task.id == taskModel.id);
+    final int index = taskList.indexWhere((task) => task.id == taskModel.id);
     taskList[index].status = TaskStatus.finished;
-    final stringList = taskList.map((task) => jsonEncode(task.toJson())).toList();
+    final stringList =
+        taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
     state = state.copywith(tasksList: taskList);
-
   }
-
-
-
 }

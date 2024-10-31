@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/constants/app_constants.dart';
 
 class AppUtils {
 
@@ -33,5 +34,15 @@ static TimeOfDay stringToTimeOfDay(String stringTime){
 
   return TimeOfDay(hour: hour, minute: minute);
 }
+
+    //FUNCTION USED TO SERIALIZE TASKSTATUS ENUM INTO AND FROM JSON
+  static  TaskStatus? getTaskStatusFromString(String statusAsString) {
+      for (TaskStatus element in TaskStatus.values) {
+        if (element.toString() == statusAsString) {
+          return element;
+        }
+      }
+      return null;
+    }
 
 }
