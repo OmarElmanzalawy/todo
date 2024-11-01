@@ -38,7 +38,6 @@ class TodoScreen extends ConsumerWidget {
         backgroundColor: Colors.transparent,
         actions: [
           IconButton(onPressed: (){
-            //getIt<DialogueService>().showDialog(CreateTaskDialog(), context);
         getIt<DialogueService>().showBottomSheet(CreateTaskBottomSheet(), context);
           }, icon: Padding(
             padding: const EdgeInsets.only(right: 8.0),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
@@ -21,13 +22,18 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: LOAD DATA FROM SPLASH SCREEN WHEN YOU IMPLEMENT IT
+    //AND MAKE THIS A STATELESS WIDGET WITH CONSUMER WIDGETS FOR PARTS THAT NEED REBUILDS
+    //TO AVOID UNNECESSARY REBUILDS
     super.initState();
     StartupService.loadLocalData(ref);
   }
 
   @override
   Widget build(BuildContext context) {
+    print('rebuilt');
+    final tasks = ref.watch(tasksProvider);
+    final bool isTasksEmpty = tasks.tasksList.length == 0;
     Size size = MediaQuery.sizeOf(context);
     return Theme(
       data: AppThemeData.greenTheme,
@@ -117,7 +123,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   const VerticalDivider(
                                     color: Colors.black38,
                                   ),
-                                  const IntrinsicWidth(
+                                   IntrinsicWidth(
                                     child: Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Column(
@@ -128,7 +134,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                             'FINISHED TASKS',
                                             style: AppConstants.thinText,
                                           ),
-                                          Text('4 tasks'),
+                                          Text('${tasks.tasksFinished} tasks' ?? 'No Tasks Selected'),
+                                          
                                           Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 8.0),
@@ -137,10 +144,10 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                             ),
                                           ),
                                           Text(
-                                            'UNFINISHED TASKS',
+                                            'TOTAL TASKS',
                                             style: AppConstants.thinText,
                                           ),
-                                          Text('8 tasks'),
+                                          Text('${tasks.totalTasks} tasks' ?? 'No Tasks Selected'),
                                         ],
                                       ),
                                     ),
@@ -208,12 +215,18 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         child: Container(
                           color: Colors.transparent,
                           height: 180,
-                          child: CarouselView(
+                          child: isTasksEmpty ? 
+                          Center(
+                            child: Text('No Tasks Created',
+                            style: AppConstants.thinText.copyWith(color: AppColors.black,fontWeight: FontWeight.w300),
+                            )
+                            ,)
+                            :CarouselView(
                             elevation: 1,
                             itemSnapping: true,
                             itemExtent: MediaQuery.sizeOf(context).width - 80,
-                            children: List.generate(10, (int index) {
-                              return const DashTask();
+                            children: List.generate(tasks.tasksList.length, (int index) {
+                              return  DashTask(taskModel: tasks.tasksList[index],);
                             }),
                           ),
                         ),

@@ -5,7 +5,9 @@ import 'package:todo/models/task_model.dart';
 import 'package:todo/widgets/dashboard/task_circle.dart';
 
 class DashTask extends StatelessWidget {
-  const DashTask({super.key});
+  const DashTask({super.key, required this.taskModel});
+
+  final TaskModel taskModel;
 
 //TODO: USE LAYOUT BUILDER TO SHAPE THIS WIDGET DIFFERENTLY FOR 
 //LARGE SCREEN SIZES
@@ -34,8 +36,8 @@ class DashTask extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Continue Flutter Course For 2 Hours',
+            Text(
+              taskModel.title,
               style: TextStyle(
                   color: AppColors.black,
                   fontWeight: FontWeight.w500,
