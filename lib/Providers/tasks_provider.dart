@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/Providers/tasks_state.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/service/dialogue_service.dart';
+import 'package:todo/service/init_getit.dart';
 
 final tasksProvider = StateNotifierProvider<TasksProvider, TasksState>((ref) {
   return TasksProvider();
@@ -23,7 +25,9 @@ class TasksProvider extends StateNotifier<TasksState> {
     final stringList =
         taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
-    state = state.copywith(tasksList: taskList);
+
+    final int totalTasks = state.totalTasks! + 1 ?? 0;
+    state = state.copywith(tasksList: taskList,totalTasks: totalTasks);
   }
 
   Future<void> deleteTask(TaskModel taskmodel) async {
@@ -33,7 +37,11 @@ class TasksProvider extends StateNotifier<TasksState> {
     final stringList =
         taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
-    state = state.copywith(tasksList: taskList);
+
+    final int? finishedTasks = taskmodel.status == TaskStatus.finished ? state.tasksFinished! -1 : null;
+    final int totalTasks = state.totalTasks! -1; 
+
+    state = state.copywith(tasksList: taskList,totalTasks:  totalTasks,tasksFinished: finishedTasks);
     print(stringList);
   }
 
@@ -60,7 +68,7 @@ class TasksProvider extends StateNotifier<TasksState> {
   Future<void> clearTasks() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setStringList(tasksKey, []);
-    state = state.copywith(tasksList: []);
+    state = state.copywith(tasksList: [],tasksFinished: 0,totalTasks: 0);
   }
 
   Future<void> loadTasks() async {
@@ -69,21 +77,42 @@ class TasksProvider extends StateNotifier<TasksState> {
     final stringList = prefs.getStringList(tasksKey) ?? [];
     final updatedList =
         stringList.map((task) => TaskModel.fromJson(jsonDecode(task))).toList();
-    state = state.copywith(tasksList: updatedList);
+
+    //Count finished and unfinished tasks
+    int finished =0;
+    int totalTasks =0;
+    updatedList.forEach((task){
+      totalTasks +=1;
+      task.status == TaskStatus.finished ? finished+=1 : null;
+    });
+
+    print('Finished: $finished\n NotFinished: $totalTasks');
+
+    state = state.copywith(tasksList: updatedList,tasksFinished: finished,totalTasks: totalTasks);
     print('LOADED TASKS: $updatedList');
   }
 
-  Future<void> completeTask(
+  Future<bool> completeTask(
     TaskModel taskModel,
   ) async {
     final prefs = await SharedPreferences.getInstance();
     final taskList = state.tasksList;
 
     final int index = taskList.indexWhere((task) => task.id == taskModel.id);
+    if(taskList[index].status == TaskStatus.unfinished){
     taskList[index].status = TaskStatus.finished;
     final stringList =
         taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
-    state = state.copywith(tasksList: taskList);
+
+    final int finished = state.tasksFinished! + 1;
+    state = state.copywith(tasksList: taskList,tasksFinished: finished);
+    print('Total tasks: ${state.totalTasks}');
+    return true;
+    }
+    //TASK HAS ALREADY BEEN COMPLETED BEFORE
+    else{
+      return false;
+    }
   }
 }

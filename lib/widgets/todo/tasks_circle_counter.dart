@@ -2,14 +2,24 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
 
-class TasksCircleCounter extends ConsumerWidget {
+class TasksCircleCounter extends ConsumerStatefulWidget {
   const TasksCircleCounter({super.key});
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  ConsumerState<TasksCircleCounter> createState() => _TasksCircleCounterState();
+}
+
+class _TasksCircleCounterState extends ConsumerState<TasksCircleCounter> {
+
+  @override
+  Widget build(BuildContext context) {
+    final tasksFinished = ref.watch(tasksProvider.select((state)=> state.tasksFinished));
+    final tasksNotFinished = ref.watch(tasksProvider.select((state)=> state.totalTasks));
+    
     final Size size = MediaQuery.sizeOf(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 30.0),
@@ -43,10 +53,10 @@ class TasksCircleCounter extends ConsumerWidget {
                                     alignment: WrapAlignment.center,
                                     runAlignment: WrapAlignment.center,
                                     children: [
-                                  Text('7',style: AppConstants.taskCircleCounterStyle,overflow: TextOverflow.clip),
+                                  Text('$tasksFinished',style: AppConstants.taskCircleCounterStyle,overflow: TextOverflow.clip),
                                   Divider(thickness: 3,color: AppColors.primaryText,),
                                   Text(
-                                      '12',
+                                      '$tasksNotFinished',
                                       //ref.read(tasksProvider).tasksList.length.toString(),
                                       style: AppConstants.taskCircleCounterStyle,
                                       overflow: TextOverflow.clip

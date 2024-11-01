@@ -22,7 +22,7 @@ class TodoScreen extends ConsumerWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: () {
           //getIt<DialogueService>().showDialog(CreateTaskDialog(), context);
         getIt<DialogueService>().showBottomSheet(CreateTaskBottomSheet(), context);
@@ -33,9 +33,18 @@ class TodoScreen extends ConsumerWidget {
           AppIcons.plus,
           size: 30,
         ),
-      ),
+      ),*/
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(onPressed: (){
+            //getIt<DialogueService>().showDialog(CreateTaskDialog(), context);
+        getIt<DialogueService>().showBottomSheet(CreateTaskBottomSheet(), context);
+          }, icon: Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: Icon(AppIcons.plus,color: AppColors.primaryText,size: 30,),
+          ))
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

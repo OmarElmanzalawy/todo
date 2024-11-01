@@ -5,6 +5,8 @@ import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/service/dialogue_service.dart';
+import 'package:todo/service/init_getit.dart';
 
 class TaskCircle extends ConsumerStatefulWidget {
   const TaskCircle({super.key,required this.taskmodel});
@@ -46,12 +48,14 @@ class _TaskCircleState extends ConsumerState<TaskCircle> with SingleTickerProvid
     final provider = ref.watch(tasksProvider);
     return InkWell(
       onTap: ()async{
-        ref.read(tasksProvider.notifier).completeTask(widget.taskmodel);
+        final bool isfalse = await ref.read(tasksProvider.notifier).completeTask(widget.taskmodel);
         _controller.forward();
-        Future.delayed(const Duration(seconds: 1),(){
-          //IMPLEMENT ANIMATION THEN DELETE TASK
-          ref.read(tasksProvider.notifier).deleteTask(widget.taskmodel);
-        });
+        //Checks if task has been completed before
+        if(!isfalse){ 
+          getIt<DialogueService>().showSnackbar(text: 'Task is already completed',context: context);
+           print('task already completed');
+        }
+
       },
       child: AnimatedBuilder(
         animation: _controller,
@@ -62,7 +66,7 @@ class _TaskCircleState extends ConsumerState<TaskCircle> with SingleTickerProvid
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.lightGreyBorder),
             shape: BoxShape.circle,
-            color: _colorAnimation.value
+            color: widget.taskmodel.status == TaskStatus.finished ? AppColors.darkGreen :_colorAnimation.value
           ),
           child: widget.taskmodel.status == TaskStatus.finished ?  Icon(AppIcons.tick,color: AppColors.primaryText,) : null
         );
