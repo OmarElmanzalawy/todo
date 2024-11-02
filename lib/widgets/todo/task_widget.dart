@@ -13,7 +13,12 @@ class TaskWidget extends StatelessWidget {
 
   final TaskModel taskModel;
 
-  const TaskWidget({required this.taskModel});
+  //PARAMATERS TO BE PASSED TO TASK CIRCLE WIDGET
+  final GlobalKey<AnimatedListState>? animatedlistKey;
+  final bool? isMainList;
+  final int? indexForDeletion;
+
+  const TaskWidget({required this.taskModel,this.animatedlistKey,this.isMainList,this.indexForDeletion});
 
 
   @override
@@ -40,7 +45,7 @@ class TaskWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(taskModel.title,style: AppConstants.taskTitleStyle.copyWith(fontWeight: FontWeight.normal,fontSize: 18,decoration: taskModel.status==TaskStatus.finished ? TextDecoration.lineThrough : TextDecoration.none),),
-                  TaskCircle(taskmodel: taskModel,)
+                  TaskCircle(taskmodel: taskModel,animatedlistKey: animatedlistKey,)
                 ],
               ),
               taskModel.description != null ? Text(

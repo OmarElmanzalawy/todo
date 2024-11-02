@@ -123,6 +123,7 @@ bool isIOS = Theme.of(context).platform == TargetPlatform.iOS || Theme.of(contex
                     ref.read(tasksProvider.notifier).editTask(widget.taskModel,
                         titleController: taskController,
                         descriptionController: descriptionController,
+                        status: widget.taskModel.status,
                         deadline: time != null
                             ? time
                             : widget.taskModel.deadline ?? null);

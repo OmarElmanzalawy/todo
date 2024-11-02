@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
+import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/utils/animatedList_utils.dart';
 import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/my_action_chip.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
 
 class CreateTaskBottomSheet extends ConsumerStatefulWidget {
-  const CreateTaskBottomSheet({super.key});
+  const CreateTaskBottomSheet({super.key,this.taskList,required this.animatedlistKey});
+
+  final GlobalKey<AnimatedListState> animatedlistKey;
+  final List<TaskModel>? taskList;
 
   @override
   ConsumerState<CreateTaskBottomSheet> createState() =>
@@ -20,6 +25,9 @@ class CreateTaskBottomSheet extends ConsumerStatefulWidget {
 class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
   final TextEditingController taskController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+
+
+  //required GlobalKey<AnimatedListState> key,required List<TaskModel> completedList,required TaskModel task
 
   TimeOfDay? deadlineTime;
   @override
@@ -109,11 +117,14 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
                 padding: const EdgeInsets.only(right: 0.0, bottom: 12),
                 child: ConfirmBox(
                   ontap: () {
-                    ref.read(tasksProvider.notifier).addTasks(TaskModel(
+                    final TaskModel task = TaskModel(
                           title: taskController.text,
                           description: descriptionController.text,
                           deadline: deadlineTime,
-                        ));
+                          status: TaskStatus.unfinished
+                        );
+                    ref.read(tasksProvider.notifier).addTasks(task);
+                    AnimatedlistUtils.onCompleteAdd(key: widget.animatedlistKey!, completedList: widget.taskList!, task: task);
                     Navigator.pop(context);
                   },
                 ),

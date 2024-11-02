@@ -48,6 +48,7 @@ class _EditTaskDialogState extends ConsumerState<EditTaskDialog> {
                 child: ConfirmBox(
                   ontap: () {
                     ref.read(tasksProvider.notifier).editTask(widget.taskModel,
+                    status: widget.taskModel.status,
                         titleController: taskController,
                         descriptionController: descriptionController);
                     Navigator.pop(context);

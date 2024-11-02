@@ -28,6 +28,8 @@ class TasksProvider extends StateNotifier<TasksState> {
 
     final int totalTasks = state.totalTasks! + 1 ?? 0;
     state = state.copywith(tasksList: taskList,totalTasks: totalTasks);
+    print('Unfinished Tasks after add: ${state.unfinishedTasks}');
+    print('Total Tasks after add: ${state.tasksList}');
   }
 
   Future<void> deleteTask(TaskModel taskmodel) async {
@@ -50,14 +52,17 @@ class TasksProvider extends StateNotifier<TasksState> {
     required TextEditingController titleController,
     required TextEditingController descriptionController,
     TimeOfDay? deadline,
+    required TaskStatus status,
   }) async {
     final prefs = await SharedPreferences.getInstance();
-    final List<TaskModel> tasks = state.tasksList;
+    final List<TaskModel> tasks = status == TaskStatus.finished ?  state.finishedTasks : state.tasksList;
     final int index = tasks.indexWhere((element) => element.id == taskModel.id);
     tasks[index] = TaskModel(
         title: titleController.text,
         description: descriptionController.text,
-        deadline: deadline);
+        deadline: deadline,
+        status: status
+        );
     print(
         'After editing: ${tasks[index].title}, textfield: ${titleController.text}');
     final stringList = tasks.map((task) => jsonEncode(task.toJson())).toList();
@@ -104,9 +109,12 @@ class TasksProvider extends StateNotifier<TasksState> {
     final stringList =
         taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);
+    
 
     final int finished = state.tasksFinished! + 1;
     state = state.copywith(tasksList: taskList,tasksFinished: finished);
+    print('Finished Tasks: ${state.finishedTasks}');
+    print('Unfinished Tasks: ${state.unfinishedTasks}');
     print('Total tasks: ${state.totalTasks}');
     return true;
     }
