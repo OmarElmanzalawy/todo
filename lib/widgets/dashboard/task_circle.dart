@@ -7,17 +7,13 @@ import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/service/dialogue_service.dart';
 import 'package:todo/service/init_getit.dart';
-import 'package:todo/utils/animatedList_utils.dart';
 
 class TaskCircle extends ConsumerStatefulWidget {
-  const TaskCircle({super.key,required this.taskmodel,this.animatedlistKey,this.isMainlist,this.indexForDeletion});
+  const TaskCircle({super.key,required this.taskmodel,this.animatedlistKey,this.indexForDeletion});
 
   //TODO MAKE IT REQUIRED LATER
   final TaskModel taskmodel;
   final GlobalKey<AnimatedListState>? animatedlistKey;
-  //Main list = Unifinished tasks animated list
-  //if true then this is the first list else its the second list
-  final bool? isMainlist;
   //Index of task to be deleted
   final int? indexForDeletion;
 
@@ -37,10 +33,12 @@ class _TaskCircleState extends ConsumerState<TaskCircle> with SingleTickerProvid
     _colorAnimation = ColorTween(begin: AppColors.primaryText, end: AppColors.darkGreen)
     .animate(_controller);
 
-    _controller.addListener((){
-      print(_colorAnimation.value);
-    });
     super.initState();
+
+    _controller.addListener((){
+      print('Animation started for: ${widget.taskmodel.title}');
+    });
+
   }
 
   @override
@@ -53,17 +51,12 @@ class _TaskCircleState extends ConsumerState<TaskCircle> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     final provider = ref.watch(tasksProvider);
-    return InkWell(
+    return GestureDetector(
       onTap: ()async{
+        print('circle tap: ${widget.taskmodel.title}');
         final bool isfalse = await ref.read(tasksProvider.notifier).completeTask(widget.taskmodel);
         _controller.forward();
         if(isfalse){
-        if(widget.animatedlistKey != null && widget.isMainlist == false){
-          AnimatedlistUtils.onCompleteAdd(key: widget.animatedlistKey!, completedList: provider.finishedTasks, task: widget.taskmodel);
-        }
-        else if(widget.animatedlistKey != null && widget.isMainlist == true){
-          AnimatedlistUtils.onCompleteDelete(key: widget.animatedlistKey!, task: widget.taskmodel, index: widget.indexForDeletion!);
-        }
         }
         //Checks if task has been completed before
         if(!isfalse){ 

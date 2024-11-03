@@ -21,7 +21,7 @@ static Future init()async{
 static Future loadLocalData(WidgetRef ref)async{
   Future.microtask(()async{
   print('microtasking');
-  await ref.read(tasksProvider.notifier).clearTasks();
+  //await ref.read(tasksProvider.notifier).clearTasks();
   await ref.read(tasksProvider.notifier).loadTasks();
 
 

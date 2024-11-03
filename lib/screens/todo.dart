@@ -1,3 +1,4 @@
+import 'package:animated_reorderable_list/animated_reorderable_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/tasks_provider.dart';
@@ -7,6 +8,7 @@ import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/service/dialogue_service.dart';
 import 'package:todo/service/init_getit.dart';
+import 'package:todo/utils/app_utils.dart';
 import 'package:todo/widgets/dialogs/create_task_bottom_sheet.dart';
 import 'package:todo/widgets/todo/task_widget.dart';
 import 'package:todo/widgets/todo/tasks_circle_counter.dart';
@@ -19,16 +21,13 @@ class TodoScreen extends ConsumerStatefulWidget {
 }
 
 class _TodoScreenState extends ConsumerState<TodoScreen> {
-  final GlobalKey<AnimatedListState> finishedAnimatedListKey = GlobalKey();
-  final GlobalKey<AnimatedListState> unfinishedAnimatedListKey = GlobalKey();
+  final GlobalKey<AnimatedListState> animatedListKey = GlobalKey();
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     
     final tasks = ref.watch(tasksProvider);
-    print(tasks.unfinishedTasks);
+    final sortedTasks = AppUtils.sortTasks(ref);
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
@@ -51,7 +50,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
               onPressed: () {
                 getIt<DialogueService>()
                     .showBottomSheet(CreateTaskBottomSheet(
-                      animatedlistKey: unfinishedAnimatedListKey,
+                      animatedlistKey: animatedListKey,
                       taskList: tasks.unfinishedTasks,
                     ), context);
               },
@@ -69,7 +68,6 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 3,
             child: Container(
               constraints:
                   BoxConstraints(minHeight: 200, minWidth: double.infinity),
@@ -130,46 +128,55 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
             ),
           ),
           Expanded(
-              flex: 2,
               //Finished
-              child: AnimatedList(
-                key: unfinishedAnimatedListKey,
-                  initialItemCount: tasks.unfinishedTasks.length,
-                  itemBuilder: (context, index,animation) {
-                    return SizeTransition(
-                      sizeFactor: animation,
-                      child: Dismissible(
-                          onDismissed: (DismissDirection direction) {
-                            if (direction == DismissDirection.endToStart) {
-                              ref
-                                  .read(tasksProvider.notifier)
-                                  .deleteTask(tasks.tasksList[index]);
-                            }
-                          },
-                          key: ValueKey<TaskModel>(tasks.tasksList[index]),
-                          secondaryBackground: Container(
-                            color: AppColors.red,
-                            child: Icon(
-                              AppIcons.delete,
-                              color: AppColors.primaryText,
-                              size: 40,
-                            ),
+              child: AnimatedReorderableListView(
+
+                enterTransition: [FadeIn(),SlideInLeft()],
+                exitTransition: [SlideInDown()],
+                insertDuration: const Duration(milliseconds: 500),
+                removeDuration: const Duration(milliseconds: 500),
+
+                onReorder: (oldIndex,newIndex){
+                  //REORDER FUNCTION
+                  ref.read(tasksProvider.notifier).reOrder(oldIndex, newIndex);
+                },
+
+                  items: sortedTasks,
+                  itemBuilder: (context, index) {
+                    return Dismissible(
+                        onDismissed: (DismissDirection direction) {
+                          if (direction == DismissDirection.endToStart) {
+                            ref
+                                .read(tasksProvider.notifier)
+                                .deleteTask(tasks.tasksList[index]);
+                          }
+                        },
+                        key: ValueKey<TaskModel>(tasks.tasksList[index]),
+                        secondaryBackground: Container(
+                          color: AppColors.red,
+                          child: Icon(
+                            AppIcons.delete,
+                            color: AppColors.primaryText,
+                            size: 40,
                           ),
-                          background: Container(
-                            color: AppColors.darkGreen,
-                          ),
-                          child: TaskWidget(
-                            taskModel:  tasks.unfinishedTasks[index],
-                            animatedlistKey: unfinishedAnimatedListKey,
-                            isMainList: true,
-                            indexForDeletion: index,
-                          )),
-                    );
-                  })),
+                        ),
+                        background: Container(
+                          color: AppColors.darkGreen,
+                        ),
+                        child: TaskWidget(
+                          taskModel:  sortedTasks[index],
+                          animatedlistKey: animatedListKey,
+                          isMainList: true,
+                          indexForDeletion: index,
+                        ));
+                  },
+                  
+                  ),
+                  ),
           /*Center(
                     child: Text('Finished',style: AppConstants.taskTitleStyle.copyWith(color: AppColors.subtitleText),),
                   ),*/
-          Expanded(
+          /*Expanded(
               flex: 1,
               child: AnimatedList(
                 key: finishedAnimatedListKey,
@@ -184,7 +191,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                     ),
                   );
                 },
-              ))
+              ))*/
         ],
       ),
     );

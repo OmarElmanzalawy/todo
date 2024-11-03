@@ -6,7 +6,6 @@ import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
-import 'package:todo/utils/animatedList_utils.dart';
 import 'package:todo/widgets/todo/confirm_box.dart';
 import 'package:todo/widgets/todo/my_action_chip.dart';
 import 'package:todo/widgets/todo/mytextfield.dart';
@@ -124,7 +123,7 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
                           status: TaskStatus.unfinished
                         );
                     ref.read(tasksProvider.notifier).addTasks(task);
-                    AnimatedlistUtils.onCompleteAdd(key: widget.animatedlistKey!, completedList: widget.taskList!, task: task);
+                    //AnimatedlistUtils.onCompleteAdd(key: widget.animatedlistKey!, completedList: widget.taskList!, task: task);
                     Navigator.pop(context);
                   },
                 ),

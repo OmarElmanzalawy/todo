@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_constants.dart';
+import 'package:todo/models/task_model.dart';
 
 class AppUtils {
 
@@ -45,7 +48,16 @@ static TimeOfDay stringToTimeOfDay(String stringTime){
       return null;
     }
 
+  //Function that sorts task list based on status where unfinished tasks are first
+    static List<TaskModel> sortTasks(WidgetRef ref){
 
-  
+    final provider = ref.read(tasksProvider);
+    final sortedList = [...provider.unfinishedTasks,...provider.finishedTasks];
+
+    sortedList.forEach((task)=> print(task.status));
+
+    return sortedList;
+
+  }
 
 }
