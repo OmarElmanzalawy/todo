@@ -20,11 +20,11 @@ class TasksProvider extends StateNotifier<TasksState> {
 
   Future<void> addTasks(TaskModel taskModel) async {
     //final storage =  getIt<StorageService>();
-    final prefs = await SharedPreferences.getInstance();
+    //final prefs = await SharedPreferences.getInstance();
     final taskList = [...state.tasksList, taskModel];
-    final stringList =
+    /*final stringList =
         taskList.map((task) => jsonEncode(task.toJson())).toList();
-    prefs.setStringList(tasksKey, stringList);
+    prefs.setStringList(tasksKey, stringList);*/
 
     final int totalTasks = state.totalTasks! + 1 ?? 0;
     state = state.copywith(tasksList: taskList,totalTasks: totalTasks);
@@ -33,18 +33,17 @@ class TasksProvider extends StateNotifier<TasksState> {
   }
 
   Future<void> deleteTask(TaskModel taskmodel) async {
-    final prefs = await SharedPreferences.getInstance();
+    //final prefs = await SharedPreferences.getInstance();
     List<TaskModel> taskList = state.tasksList;
     taskList.removeWhere((task) => task == taskmodel);
-    final stringList =
+    /*final stringList =
         taskList.map((task) => jsonEncode(task.toJson())).toList();
-    prefs.setStringList(tasksKey, stringList);
+    prefs.setStringList(tasksKey, stringList);*/
 
     final int? finishedTasks = taskmodel.status == TaskStatus.finished ? state.tasksFinished! -1 : null;
     final int totalTasks = state.totalTasks! -1; 
 
     state = state.copywith(tasksList: taskList,totalTasks:  totalTasks,tasksFinished: finishedTasks);
-    print(stringList);
   }
 
   Future<void> editTask(
@@ -54,7 +53,7 @@ class TasksProvider extends StateNotifier<TasksState> {
     TimeOfDay? deadline,
     required TaskStatus status,
   }) async {
-    final prefs = await SharedPreferences.getInstance();
+    //final prefs = await SharedPreferences.getInstance();
     final List<TaskModel> tasks = status == TaskStatus.finished ?  state.finishedTasks : state.tasksList;
     final int index = tasks.indexWhere((element) => element.id == taskModel.id);
     tasks[index] = TaskModel(
@@ -66,7 +65,7 @@ class TasksProvider extends StateNotifier<TasksState> {
     print(
         'After editing: ${tasks[index].title}, textfield: ${titleController.text}');
     final stringList = tasks.map((task) => jsonEncode(task.toJson())).toList();
-    prefs.setStringList(tasksKey, stringList);
+    //prefs.setStringList(tasksKey, stringList);
     state = state.copywith(tasksList: tasks);
   }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/constants/app_theme_data.dart';
+import 'package:todo/screens/sign_in_screen.dart';
+import 'package:todo/screens/splash_screen.dart';
 import 'package:todo/screens/dashboard.dart';
 import 'package:todo/screens/todo.dart';
 import 'package:todo/service/startup_service.dart';
@@ -19,11 +21,13 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/dashboard',
+      initialRoute: '/splash',
 
       routes: {
         '/dashboard': (context) => DashBoardScreen(),
         '/todo': (context) =>TodoScreen(),
+        '/splash': (context) => SplashScreen(),
+        '/signin': (context) => SignInScreen()
       },
 
       theme: AppThemeData.mainTheme,

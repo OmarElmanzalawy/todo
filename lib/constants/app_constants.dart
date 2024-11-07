@@ -19,6 +19,8 @@ class AppConstants {
   static const TextStyle taskCircleCounterStyle = TextStyle(
       fontSize: 45, color: AppColors.primaryText, fontWeight: FontWeight.bold);
 
+  static const TextStyle splashItemTitleStyle = TextStyle(fontSize: 25,fontWeight: FontWeight.bold,color: AppColors.black,); 
+
 }
 
   enum TaskStatus{

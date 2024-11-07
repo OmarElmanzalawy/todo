@@ -31,18 +31,6 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: true,
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //getIt<DialogueService>().showDialog(CreateTaskDialog(), context);
-        getIt<DialogueService>().showBottomSheet(CreateTaskBottomSheet(), context);
-        },
-        backgroundColor: AppColors.floatingButton,
-        foregroundColor: Colors.white,
-        child: Icon(
-          AppIcons.plus,
-          size: 30,
-        ),
-      ),*/
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         actions: [
@@ -130,7 +118,6 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
           Expanded(
               //Finished
               child: AnimatedReorderableListView(
-
                 enterTransition: [FadeIn(),SlideInLeft()],
                 exitTransition: [SlideInDown()],
                 insertDuration: const Duration(milliseconds: 500),
