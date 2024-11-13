@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/widgets/auth/titled_textfield.dart';
 
-class SignInScreen extends StatelessWidget {
-  SignInScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  SignUpScreen({super.key});
 
-  final TextEditingController _emailcontroller = TextEditingController();
-  final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,36 +18,58 @@ class SignInScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Text(
-              'Sign In',
-              style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.darkestGreen),
-              textAlign: TextAlign.center,
-            ),
+          Text(
+            'Sign Up',
+            style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.w600,
+                color: AppColors.darkestGreen),
+            textAlign: TextAlign.center,
           ),
           SizedBox(
             height: 25,
           ),
-          Text(
-            'Welcome Back You have been missed!',
-            style: TextStyle(fontSize: 35, fontWeight: FontWeight.w200),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: 30,
+                    Stack(
+            children: [
+              CircleAvatar(
+                radius: 70,
+                backgroundImage: NetworkImage('https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg'),
+              ),
+              Positioned(
+                //top: 150,
+                bottom: 0,
+                left: 70,
+                child: Container(
+                  height: 50,
+                  child: IconButton(
+                    icon: Icon(Icons.add_a_photo,color: Colors.white,),
+                    onPressed: (){
+                    }, 
+                    ),
+                  decoration: BoxDecoration(
+                    color:  AppColors.darkGreen, //Colors.grey.shade200,
+                    borderRadius: BorderRadius.circular(20)
+                  ),
+                ),
+              )
+            ],
           ),
           Column(
             children: [
+                Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: TitledTextField(
+                  title: 'User Name',
+                  hint: 'enter your username',
+                  controller: _emailController,
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: TitledTextField(
                   title: 'Email',
                   hint: 'enter your email',
-                  controller: _emailcontroller,
+                  controller: _emailController,
                 ),
               ),
               Padding(
@@ -54,7 +77,7 @@ class SignInScreen extends StatelessWidget {
                 child: TitledTextField(
                   title: 'Password',
                   hint: 'enter your password',
-                  controller: _passwordcontroller,
+                  controller: _passwordController,
                   isSensitive: true,
                 ),
               ),
@@ -68,7 +91,7 @@ class SignInScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(
-            height: 50,
+            height: 15,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -88,7 +111,7 @@ class SignInScreen extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 90.0),
+            padding: const EdgeInsets.only(top: 30.0),
             child: ElevatedButton(
               onPressed: () {
                 print('Sign in');
@@ -116,12 +139,10 @@ class SignInScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('Don\' have an account?'),
+              Text('Already have an account?'),
               TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/signup');
-                },
-                child: Text('Register'),
+                onPressed: () {},
+                child: Text('Login'),
                 style: ButtonStyle(
                     foregroundColor:
                         WidgetStatePropertyAll(AppColors.darkGreen),

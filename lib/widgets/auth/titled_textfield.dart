@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/constants/app_colors.dart';
 
 class TitledTextField extends StatefulWidget {
   final String? title;
@@ -50,7 +51,12 @@ class _TitledTextFieldState extends State<TitledTextField> {
       TextField(
         obscureText: widget.isSensitive ?? false ? true : false,
         controller: widget.controller,
+        cursorColor: AppColors.darkestGreen,
         decoration: InputDecoration(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.darkestGreen,width: 1.5),
+            borderRadius: BorderRadius.circular(15)
+          ),
             contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 12),
             floatingLabelBehavior: FloatingLabelBehavior.never,
             suffixIcon: widget.suffixIcon ,
@@ -62,6 +68,7 @@ class _TitledTextFieldState extends State<TitledTextField> {
             border: OutlineInputBorder(
                 //borderSide: BorderSide.none,
                 borderRadius: BorderRadius.circular(15))),
+            
       ),
     ]);
   }
