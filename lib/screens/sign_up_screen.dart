@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/image_picker_provider.dart';
 import 'package:todo/constants/app_colors.dart';
+import 'package:todo/service/auth_service.dart';
 import 'package:todo/widgets/auth/titled_textfield.dart';
 
 class SignUpScreen extends ConsumerWidget {
@@ -65,7 +66,7 @@ class SignUpScreen extends ConsumerWidget {
                 child: TitledTextField(
                   title: 'User Name',
                   hint: 'enter your username',
-                  controller: _emailController,
+                  controller: _usernameController,
                 ),
               ),
               Padding(
@@ -118,7 +119,7 @@ class SignUpScreen extends ConsumerWidget {
             padding: const EdgeInsets.only(top: 30.0),
             child: ElevatedButton(
               onPressed: () {
-                print('Sign in');
+                AuthService.registerUser(username: _usernameController.text, email: _emailController.text, password: _passwordController.text);
               },
               style: ButtonStyle(
                 padding: WidgetStatePropertyAll(EdgeInsets.all(12)),
