@@ -10,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   
-  fluid_dialog: ^2.0.0
   get_it: ^8.0.0
   flutter_riverpod: ^2.5.3
   dotted_border: ^2.1.0
@@ -23,6 +22,7 @@ dependencies:
   lottie: ^3.1.3
   dots_indicator: ^3.0.0
   build_runner: ^2.4.13
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

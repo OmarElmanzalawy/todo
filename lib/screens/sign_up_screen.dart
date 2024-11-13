@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/image_picker_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/widgets/auth/titled_textfield.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends ConsumerWidget {
   SignUpScreen({super.key});
 
   final TextEditingController _emailController = TextEditingController();
@@ -10,7 +12,8 @@ class SignUpScreen extends StatelessWidget {
   final TextEditingController _usernameController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
+    final profilePhoto = ref.watch(imagePickerProvider);
     final Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +36,7 @@ class SignUpScreen extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 70,
-                backgroundImage: NetworkImage('https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg'),
+                backgroundImage: profilePhoto != null ? FileImage(profilePhoto) : NetworkImage('https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg'),
               ),
               Positioned(
                 //top: 150,
@@ -44,6 +47,7 @@ class SignUpScreen extends StatelessWidget {
                   child: IconButton(
                     icon: Icon(Icons.add_a_photo,color: Colors.white,),
                     onPressed: (){
+                      ref.read(imagePickerProvider.notifier).pickImage();
                     }, 
                     ),
                   decoration: BoxDecoration(

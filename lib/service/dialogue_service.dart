@@ -1,4 +1,3 @@
-import 'package:fluid_dialog/fluid_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/constants/app_colors.dart';
 
@@ -9,17 +8,6 @@ class DialogueService {
     dialogueKey = GlobalKey<NavigatorState>();
   }
 
-  Future<void> showDialog(Widget widget,BuildContext context) async {
-    await showAdaptiveDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (context) => FluidDialog(
-            rootPage: FluidDialogPage(
-                alignment: Alignment.center,
-                builder: (context) {
-                  return widget;
-                })));
-  }
   Future<void> showAlertDialog(Widget widget,BuildContext context) async {
     await showAdaptiveDialog(
         barrierDismissible: true,
