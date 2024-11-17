@@ -14,22 +14,42 @@ class AuthService {
     return downloadUrl;
   }
 
- static void registerUser({required String username,required String email,required String password, File? image })async{
+ static Future<bool> registerUser({required String username,required String email,required String password, File? image })async{
     try{
       if(username.isNotEmpty && email.isNotEmpty && password.isNotEmpty){
     UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-    String? downloadUrl = image != null ? await _uploadToStorage(image) : null;
-    UserModel user = UserModel(email: email, profileUrl: downloadUrl, uid: userCredential.user!.uid, username: username);
+    await userCredential.user!.updateDisplayName(username);
+    //TODO: SAVE PROFILE PHOTO TO FIREABSE STORAGE ONCE YOU SORT OUT PAYMENT PLAN
+    //String? downloadUrl = image != null ? await _uploadToStorage(image) : null;
+    UserModel user = UserModel(email: email, uid: userCredential.user!.uid, username: username);
     await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set(user.toJson());
     print('registerd successully');
+    return true;
       }
       else{
-
+       return false;
       }
     }
     catch(e){
       //Display snackbar
+      return false;
     }
   }
+
+static Future<bool> login({required String email,required String password})async{
+
+  try{
+    if(email.isNotEmpty && password.isNotEmpty){
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      return true;
+    }
+    return false;
+  }
+  catch (e){
+    print(e.toString());
+    return false;
+  }
+
+}
 
 }

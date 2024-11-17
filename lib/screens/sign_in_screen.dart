@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo/constants/app_colors.dart';
+import 'package:todo/service/auth_service.dart';
+import 'package:todo/service/dialogue_service.dart';
+import 'package:todo/service/init_getit.dart';
 import 'package:todo/widgets/auth/titled_textfield.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -90,8 +93,13 @@ class SignInScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 90.0),
             child: ElevatedButton(
-              onPressed: () {
-                print('Sign in');
+              onPressed: () async{
+                print('login');
+                final bool didLogin = await AuthService.login(email: _emailcontroller.text, password: _passwordcontroller.text);
+                if(didLogin){
+                  Navigator.pushNamed(context, '/dashboard');
+                }
+                else{getIt<DialogueService>().showSnackbar(text: 'Error occured. Please try again', context: context);}
               },
               style: ButtonStyle(
                 padding: WidgetStatePropertyAll(EdgeInsets.all(12)),
@@ -106,7 +114,7 @@ class SignInScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  'Submit',
+                  'Login',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),

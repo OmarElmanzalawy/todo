@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/constants/app_theme_data.dart';
@@ -8,10 +9,12 @@ import 'package:todo/screens/dashboard.dart';
 import 'package:todo/screens/todo.dart';
 import 'package:todo/service/startup_service.dart';
 
-void main() {
+void main() async{
   
   //TODO: ADD A GLOBAL CLASS WHERE EVERY CLASS GETS INITIALIZED
-  StartupService.init();
+  await StartupService.init();
+  print(FirebaseAuth.instance.currentUser!.displayName);
+  //await FirebaseAuth.instance.signOut(); //FOR DEBUGING ONLY
   runApp(ProviderScope(child: const MainApp()));
 }
 
@@ -22,7 +25,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/splash',
+      initialRoute: FirebaseAuth.instance.currentUser == null  ? '/splash' : '/dashboard',
 
       routes: {
         '/dashboard': (context) => DashBoardScreen(),

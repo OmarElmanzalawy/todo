@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/image_picker_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/service/auth_service.dart';
+import 'package:todo/service/dialogue_service.dart';
+import 'package:todo/service/init_getit.dart';
 import 'package:todo/widgets/auth/titled_textfield.dart';
 
 class SignUpScreen extends ConsumerWidget {
@@ -37,7 +40,7 @@ class SignUpScreen extends ConsumerWidget {
             children: [
               CircleAvatar(
                 radius: 70,
-                backgroundImage: profilePhoto != null ? FileImage(profilePhoto) : NetworkImage('https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg'),
+                backgroundImage: profilePhoto != null ? FileImage(profilePhoto) : CachedNetworkImageProvider('https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg'),
               ),
               Positioned(
                 //top: 150,
@@ -118,8 +121,15 @@ class SignUpScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(top: 30.0),
             child: ElevatedButton(
-              onPressed: () {
-                AuthService.registerUser(username: _usernameController.text, email: _emailController.text, password: _passwordController.text);
+              onPressed: () async{
+                bool didRegister = await AuthService.registerUser(username: _usernameController.text, email: _emailController.text, password: _passwordController.text);
+                if(didRegister) { 
+                  getIt<DialogueService>().showSnackbar(text: 'Registered Successfully', context: context);
+                  Navigator.pushNamed(context, '/dashboard');
+                 }
+                 else{
+                getIt<DialogueService>().showSnackbar(text: 'Error While Registring', context: context);
+                 }
               },
               style: ButtonStyle(
                 padding: WidgetStatePropertyAll(EdgeInsets.all(12)),
@@ -134,7 +144,7 @@ class SignUpScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  'Submit',
+                  'Register',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
