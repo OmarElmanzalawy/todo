@@ -19,9 +19,8 @@ class AuthService {
       if(username.isNotEmpty && email.isNotEmpty && password.isNotEmpty){
     UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
     await userCredential.user!.updateDisplayName(username);
-    //TODO: SAVE PROFILE PHOTO TO FIREABSE STORAGE ONCE YOU SORT OUT PAYMENT PLAN
-    //String? downloadUrl = image != null ? await _uploadToStorage(image) : null;
-    UserModel user = UserModel(email: email, uid: userCredential.user!.uid, username: username);
+    String? downloadUrl = image != null ? await _uploadToStorage(image) : null;
+    UserModel user = UserModel(email: email, uid: userCredential.user!.uid, username: username,profileUrl: downloadUrl);
     await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set(user.toJson());
     print('registerd successully');
     return true;

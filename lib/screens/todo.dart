@@ -2,6 +2,7 @@ import 'package:animated_reorderable_list/animated_reorderable_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/tasks_provider.dart';
+import 'package:todo/Providers/tasks_stream_provder.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
@@ -25,7 +26,8 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
+    final tasksStream = ref.watch(tasksStreamProvider);
+    print('STREAM: ${tasksStream.value}');
     final tasks = ref.watch(tasksProvider);
     final sortedTasks = AppUtils.sortTasks(ref);
     return Scaffold(
@@ -115,7 +117,25 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
               ],
             ),
           ),
-          Expanded(
+          tasksStream.when(
+            error: (error, stackTrace) {
+              print(error.toString());
+              return Center(
+                child: Text('Error Occured'),
+              );
+            },
+
+            loading: () {
+              //TODO USE SKELETON TASKS LOADING INSTEAD OF CIRCULAR PROGRESS INDICATOR
+              return Center(
+                child: CircularProgressIndicator.adaptive(
+                  backgroundColor: AppColors.darkGreen,
+                ),
+              );
+            },
+
+            data: (data) {
+              return Expanded(
               //Finished
               child: AnimatedReorderableListView(
                 enterTransition: [FadeIn(),SlideInLeft()],
@@ -128,17 +148,17 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                   ref.read(tasksProvider.notifier).reOrder(oldIndex, newIndex);
                 },
 
-                  items: sortedTasks,
+                  items: data,
                   itemBuilder: (context, index) {
                     return Dismissible(
                         onDismissed: (DismissDirection direction) {
                           if (direction == DismissDirection.endToStart) {
                             ref
                                 .read(tasksProvider.notifier)
-                                .deleteTask(tasks.tasksList[index]);
+                                .deleteTask(data[index]);
                           }
                         },
-                        key: ValueKey<TaskModel>(tasks.tasksList[index]),
+                        key: ValueKey<TaskModel>(data[index]),
                         secondaryBackground: Container(
                           color: AppColors.red,
                           child: Icon(
@@ -151,7 +171,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                           color: AppColors.darkGreen,
                         ),
                         child: TaskWidget(
-                          taskModel:  sortedTasks[index],
+                          taskModel:  data[index],
                           animatedlistKey: animatedListKey,
                           isMainList: true,
                           indexForDeletion: index,
@@ -159,7 +179,9 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                   },
                   
                   ),
-                  ),
+                  );
+            },
+          )
           /*Center(
                     child: Text('Finished',style: AppConstants.taskTitleStyle.copyWith(color: AppColors.subtitleText),),
                   ),*/

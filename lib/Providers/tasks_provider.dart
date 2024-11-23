@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,6 +9,7 @@ import 'package:todo/Providers/tasks_state.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/service/dialogue_service.dart';
+import 'package:todo/service/firestore_service.dart';
 import 'package:todo/service/init_getit.dart';
 
 final tasksProvider = StateNotifierProvider<TasksProvider, TasksState>((ref) {
@@ -25,9 +28,10 @@ class TasksProvider extends StateNotifier<TasksState> {
     /*final stringList =
         taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);*/
-
-    final int totalTasks = state.totalTasks! + 1 ?? 0;
-    state = state.copywith(tasksList: taskList,totalTasks: totalTasks);
+    //REMOVE COMMENT LATER FOR LINE BELOW
+    //final int totalTasks = state.totalTasks! + 1 ?? 0;
+    await FirestoreService.addTask(taskModel,FirebaseAuth.instance.currentUser!.uid);
+    state = state.copywith(tasksList: taskList);
     print('Unfinished Tasks after add: ${state.unfinishedTasks}');
     print('Total Tasks after add: ${state.tasksList}');
   }
@@ -40,10 +44,11 @@ class TasksProvider extends StateNotifier<TasksState> {
         taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);*/
 
-    final int? finishedTasks = taskmodel.status == TaskStatus.finished ? state.tasksFinished! -1 : null;
-    final int totalTasks = state.totalTasks! -1; 
-
-    state = state.copywith(tasksList: taskList,totalTasks:  totalTasks,tasksFinished: finishedTasks);
+    //REMOVE COMMENT LATER FOR LINE BELOW
+    //final int? finishedTasks = taskmodel.status == TaskStatus.finished ? state.tasksFinished! -1 : null;
+    //final int totalTasks = state.totalTasks! -1; 
+    await FirestoreService.deleteTask(taskmodel);
+    state = state.copywith(tasksList: taskList);
   }
 
   Future<void> editTask(
@@ -77,18 +82,19 @@ class TasksProvider extends StateNotifier<TasksState> {
 
   Future<void> loadTasks() async {
     print('LOADING....\n');
-    final prefs = await SharedPreferences.getInstance();
-    final stringList = prefs.getStringList(tasksKey) ?? [];
+    //final prefs =  await SharedPreferences.getInstance();
+    final stringList = []; //prefs.getStringList(tasksKey) ?? [];
     final updatedList =
         stringList.map((task) => TaskModel.fromJson(jsonDecode(task))).toList();
 
     //Count finished and unfinished tasks
     int finished =0;
     int totalTasks =0;
-    updatedList.forEach((task){
+    //REMOVE COMMENT LATER FOR LINE BELOW
+    /*updatedList.forEach((task){
       totalTasks +=1;
       task.status == TaskStatus.finished ? finished+=1 : null;
-    });
+    });*/
 
     print('Finished: $finished\n NotFinished: $totalTasks');
 

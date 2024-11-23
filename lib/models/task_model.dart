@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/utils/app_utils.dart';
+import 'package:uuid/uuid.dart';
+
+final uuid = Uuid();
 
 class TaskModel {
   final String title;
@@ -8,14 +11,15 @@ class TaskModel {
   final String? description;
   final TimeOfDay? deadline;
   //WILL CAUSE PROBLEMS LATER
-  final UniqueKey id = UniqueKey();
+  final String id = uuid.v4();
 
   TaskModel({
     required this.title,
     this.status = TaskStatus.unfinished,
     this.description,
     this.deadline,
-  });
+  }); 
+
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
 
@@ -31,6 +35,7 @@ class TaskModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
     data['title'] = title;
     data['status'] = status.toString();
     deadline != null ? data['deadline'] = AppUtils.timeOfDayToString(deadline!): null;

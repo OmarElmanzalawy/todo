@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/image_picker_provider.dart';
@@ -122,8 +123,9 @@ class SignUpScreen extends ConsumerWidget {
             padding: const EdgeInsets.only(top: 30.0),
             child: ElevatedButton(
               onPressed: () async{
-                bool didRegister = await AuthService.registerUser(username: _usernameController.text, email: _emailController.text, password: _passwordController.text);
+                bool didRegister = await AuthService.registerUser(username: _usernameController.text, email: _emailController.text, password: _passwordController.text,image: profilePhoto);
                 if(didRegister) { 
+
                   getIt<DialogueService>().showSnackbar(text: 'Registered Successfully', context: context);
                   Navigator.pushNamed(context, '/dashboard');
                  }

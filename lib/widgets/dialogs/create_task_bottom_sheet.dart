@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -116,7 +117,7 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 0.0, bottom: 12),
                 child: ConfirmBox(
-                  ontap: () {
+                  ontap: () async{
                     final TaskModel task = TaskModel(
                           title: taskController.text,
                           description: descriptionController.text,
@@ -124,7 +125,7 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
                           status: TaskStatus.unfinished
                         );
                     ref.read(tasksProvider.notifier).addTasks(task);
-                    FirestoreService.addTask(task,ref);
+                     
                     //AnimatedlistUtils.onCompleteAdd(key: widget.animatedlistKey!, completedList: widget.taskList!, task: task);
                     Navigator.pop(context);
                   },
