@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/profile_pic_url_provider.dart';
 import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/constants/app_theme_data.dart';
+import 'package:todo/service/firestore_service.dart';
 import 'package:todo/service/startup_service.dart';
 import 'package:todo/widgets/dashboard/circle_Icon.dart';
 import 'package:todo/widgets/dashboard/dash_task.dart';
@@ -18,7 +22,6 @@ class DashBoardScreen extends ConsumerStatefulWidget {
 }
 
 class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
-
   @override
   void initState() {
     // TODO: LOAD DATA FROM SPLASH SCREEN WHEN YOU IMPLEMENT IT
@@ -30,6 +33,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final String? profileUrl = ref.read(profilePicUrlProvider);
     print('rebuilt');
     final tasks = ref.watch(tasksProvider);
     final bool isTasksEmpty = tasks.tasksList.length == 0;
@@ -48,14 +52,24 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 15.0,bottom: 20,top: 50),
+                    padding:
+                        const EdgeInsets.only(left: 15.0, bottom: 20, top: 50),
                     child: Row(
                       children: [
+                        profileUrl != null ? Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(image: NetworkImage(profileUrl),fit: BoxFit.cover),
+                            shape: BoxShape.circle
+                          ),
+                        ):
                         CircleAvatar(
                           backgroundColor: Colors.transparent,
                           child: 
-                          Icon(Icons.account_circle,
-                              size: 50, color: AppColors.primaryText),
+                           Icon(Icons.account_circle,
+                              size: 50, color: AppColors.primaryText) 
+                              
                         ),
                         Spacer(),
                         CircleIcon(icon: AppIcons.notifications_outline),
@@ -73,13 +87,13 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                     color: Colors.transparent,
                     width: double.infinity,
                     height: size.height * 0.29,
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 15.0, top: 30, bottom: 15),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Hello, Joseph',
+                            'Hello, ${FirebaseAuth.instance.currentUser!.displayName}',
                             style: TextStyle(color: AppColors.lightGreen),
                           ),
                           Padding(
@@ -122,7 +136,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   const VerticalDivider(
                                     color: Colors.black38,
                                   ),
-                                   IntrinsicWidth(
+                                  IntrinsicWidth(
                                     child: Padding(
                                       padding: EdgeInsets.all(8.0),
                                       child: Column(
@@ -133,8 +147,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                             'FINISHED TASKS',
                                             style: AppConstants.thinText,
                                           ),
-                                          Text('${tasks.tasksFinished} tasks' ?? 'No Tasks Selected'),
-                                          
+                                          Text('${tasks.tasksFinished} tasks' ??
+                                              'No Tasks Selected'),
                                           Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 8.0),
@@ -146,7 +160,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                             'TOTAL TASKS',
                                             style: AppConstants.thinText,
                                           ),
-                                          Text('${tasks.totalTasks} tasks' ?? 'No Tasks Selected'),
+                                          Text('${tasks.totalTasks} tasks' ??
+                                              'No Tasks Selected'),
                                         ],
                                       ),
                                     ),
@@ -214,20 +229,27 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         child: Container(
                           color: Colors.transparent,
                           height: 180,
-                          child: isTasksEmpty ? 
-                          Center(
-                            child: Text('No Tasks Created',
-                            style: AppConstants.thinText.copyWith(color: AppColors.black,fontWeight: FontWeight.w300),
-                            )
-                            ,)
-                            :CarouselView(
-                            elevation: 1,
-                            itemSnapping: true,
-                            itemExtent: MediaQuery.sizeOf(context).width - 80,
-                            children: List.generate(tasks.tasksList.length, (int index) {
-                              return  DashTask(taskModel: tasks.tasksList[index],);
-                            }),
-                          ),
+                          child: isTasksEmpty
+                              ? Center(
+                                  child: Text(
+                                    'No Tasks Created',
+                                    style: AppConstants.thinText.copyWith(
+                                        color: AppColors.black,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                )
+                              : CarouselView(
+                                  elevation: 1,
+                                  itemSnapping: true,
+                                  itemExtent:
+                                      MediaQuery.sizeOf(context).width - 80,
+                                  children: List.generate(
+                                      tasks.tasksList.length, (int index) {
+                                    return DashTask(
+                                      taskModel: tasks.tasksList[index],
+                                    );
+                                  }),
+                                ),
                         ),
                       ),
                     ],

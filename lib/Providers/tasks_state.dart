@@ -22,7 +22,6 @@ class TasksState {
   //Function that takes tasksList and assign task based on status
   //Which is finished and which is not
   void assignTaskState() {
-    print('Custom Function');
     unfinishedTasks = tasksList
         .where((task) => task.status == TaskStatus.unfinished)
         .toList();

@@ -32,8 +32,8 @@ class TasksProvider extends StateNotifier<TasksState> {
     //final int totalTasks = state.totalTasks! + 1 ?? 0;
     await FirestoreService.addTask(taskModel,FirebaseAuth.instance.currentUser!.uid);
     state = state.copywith(tasksList: taskList);
-    print('Unfinished Tasks after add: ${state.unfinishedTasks}');
-    print('Total Tasks after add: ${state.tasksList}');
+    //print('Unfinished Tasks after add: ${state.unfinishedTasks}');
+    //print('Total Tasks after add: ${state.tasksList}');
   }
 
   Future<void> deleteTask(TaskModel taskmodel) async {
@@ -67,8 +67,6 @@ class TasksProvider extends StateNotifier<TasksState> {
         deadline: deadline,
         status: status
         );
-    print(
-        'After editing: ${tasks[index].title}, textfield: ${titleController.text}');
     final stringList = tasks.map((task) => jsonEncode(task.toJson())).toList();
     //prefs.setStringList(tasksKey, stringList);
     state = state.copywith(tasksList: tasks);
@@ -84,8 +82,8 @@ class TasksProvider extends StateNotifier<TasksState> {
     print('LOADING....\n');
     //final prefs =  await SharedPreferences.getInstance();
     final stringList = []; //prefs.getStringList(tasksKey) ?? [];
-    final updatedList =
-        stringList.map((task) => TaskModel.fromJson(jsonDecode(task))).toList();
+    // final updatedList =
+    //     stringList.map((task) => TaskModel.fromJson(jsonDecode(task))).toList();
 
     //Count finished and unfinished tasks
     int finished =0;
@@ -98,8 +96,8 @@ class TasksProvider extends StateNotifier<TasksState> {
 
     print('Finished: $finished\n NotFinished: $totalTasks');
 
-    state = state.copywith(tasksList: updatedList,tasksFinished: finished,totalTasks: totalTasks);
-    print('LOADED TASKS: $updatedList');
+    // state = state.copywith(tasksList: updatedList,tasksFinished: finished,totalTasks: totalTasks);
+    // print('LOADED TASKS: $updatedList');
   }
 
   Future<bool> completeTask(
@@ -118,9 +116,9 @@ class TasksProvider extends StateNotifier<TasksState> {
 
     final int finished = state.tasksFinished! + 1;
     state = state.copywith(tasksList: taskList,tasksFinished: finished);
-    print('Finished Tasks: ${state.finishedTasks}');
-    print('Unfinished Tasks: ${state.unfinishedTasks}');
-    print('Total tasks: ${state.totalTasks}');
+    // print('Finished Tasks: ${state.finishedTasks}');
+    // print('Unfinished Tasks: ${state.unfinishedTasks}');
+    // print('Total tasks: ${state.totalTasks}');
     return true;
     }
     //TASK HAS ALREADY BEEN COMPLETED BEFORE

@@ -27,7 +27,6 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
   @override
   Widget build(BuildContext context) {
     final tasksStream = ref.watch(tasksStreamProvider);
-    print('STREAM: ${tasksStream.value}');
     final tasks = ref.watch(tasksProvider);
     final sortedTasks = AppUtils.sortTasks(ref);
     return Scaffold(
@@ -150,12 +149,15 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
 
                   items: data,
                   itemBuilder: (context, index) {
+                    data.forEach((element) => print('index $index id: ${element.id}'));
                     return Dismissible(
                         onDismissed: (DismissDirection direction) {
                           if (direction == DismissDirection.endToStart) {
                             ref
                                 .read(tasksProvider.notifier)
                                 .deleteTask(data[index]);
+                                print('Data index id: ${data[index].id}');
+                                print('Data index check title: ${data[index].title}');
                           }
                         },
                         key: ValueKey<TaskModel>(data[index]),
