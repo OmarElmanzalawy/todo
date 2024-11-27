@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/utils/app_utils.dart';
 import 'package:uuid/uuid.dart';
 
-final uuid = Uuid();
+
 
 class TaskModel {
   final String title;
@@ -11,9 +12,11 @@ class TaskModel {
   final String? description;
   final TimeOfDay? deadline;
   //WILL CAUSE PROBLEMS LATER
-  final String id = uuid.v4();
+  final String id;
 
-  TaskModel({
+  TaskModel( 
+    {
+    required this.id,
     required this.title,
     this.status = TaskStatus.unfinished,
     this.description,
@@ -22,14 +25,25 @@ class TaskModel {
 
 
   factory TaskModel.fromJson(Map<String, dynamic> json, String id) {
-
-
     print('Dedline: ${json['deadline']}');
     return TaskModel(
+      id: json['id'],
       title: json['title'],
       status:  AppUtils.getTaskStatusFromString(json['status'])!,
       deadline: json['deadline'] != null ? AppUtils.stringToTimeOfDay(json['deadline']): null,
       description: json['description'] ?? '',
+    );
+  }
+
+    factory TaskModel.fromSnap(DocumentSnapshot snap, String id) {
+      Map<String, dynamic> snapshot = snap.data() as Map<String,dynamic>;
+    print('Dedline: ${snapshot['deadline']}');
+    return TaskModel(
+      id: snapshot['id'],
+      title: snapshot['title'],
+      status:  AppUtils.getTaskStatusFromString(snapshot['status'])!,
+      deadline: snapshot['deadline'] != null ? AppUtils.stringToTimeOfDay(snapshot['deadline']): null,
+      description: snapshot['description'] ?? '',
     );
   }
 
@@ -38,7 +52,7 @@ class TaskModel {
     data['id'] = id;
     data['title'] = title;
     data['status'] = status.toString();
-    deadline != null ? data['deadline'] = AppUtils.timeOfDayToString(deadline!): null;
+    data['deadline'] = deadline != null ? AppUtils.timeOfDayToString(deadline!): null;
     data['description'] = description;
 
     return data;

@@ -95,8 +95,8 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                             ),
                           )),
                       child: GestureDetector(
-                        onTap: () =>
-                            ref.read(tasksProvider.notifier).clearTasks(),
+                        onTap: () async=>
+                           await ref.read(tasksProvider.notifier).clearTasks(),
                         child: Row(
                           children: [
                             Icon(
@@ -149,15 +149,13 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
 
                   items: data,
                   itemBuilder: (context, index) {
-                    data.forEach((element) => print('index $index id: ${element.id}'));
                     return Dismissible(
-                        onDismissed: (DismissDirection direction) {
+                        onDismissed: (DismissDirection direction) async{
                           if (direction == DismissDirection.endToStart) {
-                            ref
+                            await ref
                                 .read(tasksProvider.notifier)
                                 .deleteTask(data[index]);
-                                print('Data index id: ${data[index].id}');
-                                print('Data index check title: ${data[index].title}');
+                                print('widget deleted');
                           }
                         },
                         key: ValueKey<TaskModel>(data[index]),

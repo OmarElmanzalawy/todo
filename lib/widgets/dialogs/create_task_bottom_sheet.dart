@@ -119,6 +119,7 @@ class _CreateTaskBottomSheetState extends ConsumerState<CreateTaskBottomSheet> {
                 child: ConfirmBox(
                   ontap: () async{
                     final TaskModel task = TaskModel(
+                      id: UniqueKey().toString(),
                           title: taskController.text,
                           description: descriptionController.text,
                           deadline: deadlineTime,

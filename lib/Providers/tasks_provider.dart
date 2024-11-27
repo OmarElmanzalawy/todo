@@ -39,7 +39,7 @@ class TasksProvider extends StateNotifier<TasksState> {
   Future<void> deleteTask(TaskModel taskmodel) async {
     //final prefs = await SharedPreferences.getInstance();
     List<TaskModel> taskList = state.tasksList;
-    taskList.removeWhere((task) => task == taskmodel);
+    //taskList.removeWhere((task) => task == taskmodel);
     /*final stringList =
         taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);*/
@@ -47,8 +47,10 @@ class TasksProvider extends StateNotifier<TasksState> {
     //REMOVE COMMENT LATER FOR LINE BELOW
     //final int? finishedTasks = taskmodel.status == TaskStatus.finished ? state.tasksFinished! -1 : null;
     //final int totalTasks = state.totalTasks! -1; 
+
     await FirestoreService.deleteTask(taskmodel);
-    state = state.copywith(tasksList: taskList);
+    print('FIRESTORE DELETE');
+    //state = state.copywith(tasksList: taskList);
   }
 
   Future<void> editTask(
@@ -59,9 +61,10 @@ class TasksProvider extends StateNotifier<TasksState> {
     required TaskStatus status,
   }) async {
     //final prefs = await SharedPreferences.getInstance();
-    final List<TaskModel> tasks = status == TaskStatus.finished ?  state.finishedTasks : state.tasksList;
+    /*final List<TaskModel> tasks = status == TaskStatus.finished ?  state.finishedTasks : state.tasksList;
     final int index = tasks.indexWhere((element) => element.id == taskModel.id);
     tasks[index] = TaskModel(
+        id: UniqueKey().toString(),
         title: titleController.text,
         description: descriptionController.text,
         deadline: deadline,
@@ -69,13 +72,16 @@ class TasksProvider extends StateNotifier<TasksState> {
         );
     final stringList = tasks.map((task) => jsonEncode(task.toJson())).toList();
     //prefs.setStringList(tasksKey, stringList);
-    state = state.copywith(tasksList: tasks);
+    state = state.copywith(tasksList: tasks);*/
+    await FirestoreService.editTask(taskModel: taskModel, titleController: titleController, descriptionController: descriptionController, status: status,deadline: deadline);
+
   }
 
   Future<void> clearTasks() async {
-    final prefs = await SharedPreferences.getInstance();
+    /*final prefs = await SharedPreferences.getInstance();
     prefs.setStringList(tasksKey, []);
-    state = state.copywith(tasksList: [],tasksFinished: 0,totalTasks: 0);
+    state = state.copywith(tasksList: [],tasksFinished: 0,totalTasks: 0);*/
+    await FirestoreService.clearTasks();
   }
 
   Future<void> loadTasks() async {

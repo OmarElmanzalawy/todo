@@ -47,7 +47,7 @@ class DashTask extends StatelessWidget {
             Align(
               alignment: Alignment.bottomRight,
               //PLACEHOLDER TASK MODEL
-              child: TaskCircle(taskmodel: TaskModel(title: 'title'),),
+              child: TaskCircle(taskmodel: TaskModel(title: 'title',id: UniqueKey().toString()),),
             ),
           ],
         ),

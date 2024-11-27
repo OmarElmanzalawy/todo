@@ -6,6 +6,7 @@ import 'package:todo/constants/app_constants.dart';
 import 'package:todo/constants/app_icons.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/service/dialogue_service.dart';
+import 'package:todo/service/firestore_service.dart';
 import 'package:todo/service/init_getit.dart';
 
 class TaskCircle extends ConsumerStatefulWidget {
@@ -53,7 +54,8 @@ class _TaskCircleState extends ConsumerState<TaskCircle> with SingleTickerProvid
     final provider = ref.watch(tasksProvider);
     return GestureDetector(
       onTap: ()async{
-        print('circle tap: ${widget.taskmodel.title}');
+        await FirestoreService.completeTask(widget.taskmodel);
+        /*print('circle tap: ${widget.taskmodel.title}');
         final bool isfalse = await ref.read(tasksProvider.notifier).completeTask(widget.taskmodel);
         _controller.forward();
         if(isfalse){
@@ -63,7 +65,7 @@ class _TaskCircleState extends ConsumerState<TaskCircle> with SingleTickerProvid
           getIt<DialogueService>().showSnackbar(text: 'Task is already completed',context: context);
            print('task already completed');
         }
-
+  */
       },
       child: AnimatedBuilder(
         animation: _controller,
