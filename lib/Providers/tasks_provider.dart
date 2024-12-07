@@ -123,21 +123,4 @@ class TasksProvider extends StateNotifier<TasksState> {
       return false;
     }
   }
-
-
-  Future<void> reOrder(int oldIndex,int newIndex)async{
-    print('dragged');
-    final prefs = await SharedPreferences.getInstance();
-    final tasklist = state.tasksList;
-    final TaskModel taskmodel = tasklist[oldIndex];
-    tasklist.removeAt(oldIndex);
-    tasklist.insert(newIndex, taskmodel);
-
-    final stringList = tasklist.map((task) => jsonEncode(task.toJson())).toList();
-
-    prefs.setStringList(tasksKey, stringList);
-    state = state.copywith(tasksList: tasklist);
-
-  }
-
 }

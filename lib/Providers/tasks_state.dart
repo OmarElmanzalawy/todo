@@ -16,7 +16,6 @@ class TasksState {
       this.finishedTasks = const [],
       this.unfinishedTasks = const []}){
         assignTaskState();
-
       }
 
   //Function that takes tasksList and assign task based on status
@@ -30,8 +29,6 @@ class TasksState {
     finishedTasks =
         tasksList.where((task) => task.status == TaskStatus.finished).toList();
   }
-
-
 
   TasksState copywith(
       {List<TaskModel>? tasksList, int? tasksFinished, int? totalTasks}) {
