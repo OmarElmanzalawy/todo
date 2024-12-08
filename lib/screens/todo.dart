@@ -137,7 +137,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
               return Expanded(
               //Finished
               child: AnimatedReorderableListView(
-                enterTransition: [FadeIn(),SlideInLeft()],
+                enterTransition: [FadeIn()],
                 exitTransition: [SlideInDown()],
                 insertDuration: const Duration(milliseconds: 500),
                 removeDuration: const Duration(milliseconds: 500),
@@ -147,18 +147,18 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                   ref.read(tasksProvider.notifier).reOrder(oldIndex, newIndex);
                 },
 
-                  items: data,
+                  items: sortedTasks,
                   itemBuilder: (context, index) {
                     return Dismissible(
                         onDismissed: (DismissDirection direction) async{
                           if (direction == DismissDirection.endToStart) {
                             await ref
                                 .read(tasksProvider.notifier)
-                                .deleteTask(data[index]);
+                                .deleteTask(sortedTasks[index]);
                                 print('widget deleted');
                           }
                         },
-                        key: ValueKey<TaskModel>(data[index]),
+                        key: ValueKey<TaskModel>(sortedTasks[index]),
                         secondaryBackground: Container(
                           color: AppColors.red,
                           child: Icon(
@@ -171,7 +171,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                           color: AppColors.darkGreen,
                         ),
                         child: TaskWidget(
-                          taskModel:  data[index],
+                          taskModel:  sortedTasks[index],
                           animatedlistKey: animatedListKey,
                           isMainList: true,
                           indexForDeletion: index,

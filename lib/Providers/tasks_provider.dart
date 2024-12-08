@@ -65,10 +65,10 @@ class TasksProvider extends StateNotifier<TasksState> {
     required TaskStatus status,
   }) async {
     //final prefs = await SharedPreferences.getInstance();
-    /*final List<TaskModel> tasks = status == TaskStatus.finished ?  state.finishedTasks : state.tasksList;
+    final List<TaskModel> tasks = status == TaskStatus.finished ?  state.finishedTasks : state.tasksList;
     final int index = tasks.indexWhere((element) => element.id == taskModel.id);
     tasks[index] = TaskModel(
-        id: UniqueKey().toString(),
+        id: taskModel.id,
         title: titleController.text,
         description: descriptionController.text,
         deadline: deadline,
@@ -76,7 +76,7 @@ class TasksProvider extends StateNotifier<TasksState> {
         );
     final stringList = tasks.map((task) => jsonEncode(task.toJson())).toList();
     //prefs.setStringList(tasksKey, stringList);
-    state = state.copywith(tasksList: tasks);*/
+    state = state.copywith(tasksList: tasks);
     await FirestoreService.editTask(taskModel: taskModel, titleController: titleController, descriptionController: descriptionController, status: status,deadline: deadline);
 
   }
