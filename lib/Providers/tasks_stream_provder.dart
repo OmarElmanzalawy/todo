@@ -12,7 +12,7 @@ final tasksStreamProvider = StreamProvider<List<TaskModel>>((ref) {
       .snapshots()
       .map((snapshot) {
     return snapshot.docs.map((doc) {
-      return TaskModel.fromJson(doc.data() as Map<String, dynamic>,doc.id);
+      return TaskModel.fromJson(doc.data() as Map<String, dynamic>);
     }).toList();
   });
   return tasksStream;

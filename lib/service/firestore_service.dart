@@ -80,11 +80,9 @@ static Future<void> editTask({
     );
   }
 
-/*static Future<void> loadTasks()async{
-
-  final tasks = FirebaseFirestore.instance.collection('Tasks').get();
+static Future<void> loadTasks()async{
 
 
-}*/
+}
 
 }

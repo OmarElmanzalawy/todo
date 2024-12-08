@@ -24,7 +24,7 @@ class TaskModel {
   }); 
 
 
-  factory TaskModel.fromJson(Map<String, dynamic> json, String id) {
+  factory TaskModel.fromJson(Map<String, dynamic> json) {
     print('Dedline: ${json['deadline']}');
     return TaskModel(
       id: json['id'],
@@ -35,7 +35,7 @@ class TaskModel {
     );
   }
 
-    factory TaskModel.fromSnap(DocumentSnapshot snap, String id) {
+    factory TaskModel.fromSnap(DocumentSnapshot snap) {
       Map<String, dynamic> snapshot = snap.data() as Map<String,dynamic>;
     print('Dedline: ${snapshot['deadline']}');
     return TaskModel(

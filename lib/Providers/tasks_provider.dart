@@ -29,28 +29,32 @@ class TasksProvider extends StateNotifier<TasksState> {
         taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);*/
     //REMOVE COMMENT LATER FOR LINE BELOW
-    //final int totalTasks = state.totalTasks! + 1 ?? 0;
+    final int totalTasks = state.totalTasks! + 1;
     await FirestoreService.addTask(taskModel,FirebaseAuth.instance.currentUser!.uid);
-    state = state.copywith(tasksList: taskList);
+    state = state.copywith(tasksList: taskList,totalTasks: totalTasks);
     //print('Unfinished Tasks after add: ${state.unfinishedTasks}');
     //print('Total Tasks after add: ${state.tasksList}');
   }
 
   Future<void> deleteTask(TaskModel taskmodel) async {
     //final prefs = await SharedPreferences.getInstance();
-    List<TaskModel> taskList = state.tasksList;
-    //taskList.removeWhere((task) => task == taskmodel);
+    
     /*final stringList =
         taskList.map((task) => jsonEncode(task.toJson())).toList();
     prefs.setStringList(tasksKey, stringList);*/
 
     //REMOVE COMMENT LATER FOR LINE BELOW
-    //final int? finishedTasks = taskmodel.status == TaskStatus.finished ? state.tasksFinished! -1 : null;
-    //final int totalTasks = state.totalTasks! -1; 
+    final bool wasCompleted = taskmodel.status == TaskStatus.finished ? true : false;
+    final int? finishedTasks = wasCompleted ? state.tasksFinished! - 1 : state.tasksFinished;
+    final int totalTasks = state.totalTasks! -1; 
 
     await FirestoreService.deleteTask(taskmodel);
+
+    List<TaskModel> taskList = state.tasksList;
+    taskList.removeWhere((task) => task == taskmodel);
+
     print('FIRESTORE DELETE');
-    //state = state.copywith(tasksList: taskList);
+    state = state.copywith(tasksList: taskList,totalTasks: totalTasks,tasksFinished: finishedTasks);
   }
 
   Future<void> editTask(
@@ -78,16 +82,17 @@ class TasksProvider extends StateNotifier<TasksState> {
   }
 
   Future<void> clearTasks() async {
-    /*final prefs = await SharedPreferences.getInstance();
-    prefs.setStringList(tasksKey, []);
-    state = state.copywith(tasksList: [],tasksFinished: 0,totalTasks: 0);*/
-    await FirestoreService.clearTasks();
+    // final prefs = await SharedPreferences.getInstance();
+    // prefs.setStringList(tasksKey, []);
+     await FirestoreService.clearTasks();
+    state = state.copywith(tasksList: [],tasksFinished: 0,totalTasks: 0);
+   
   }
 
   Future<void> loadTasks() async {
     print('LOADING....\n');
     //final prefs =  await SharedPreferences.getInstance();
-    final stringList = []; //prefs.getStringList(tasksKey) ?? [];
+     //prefs.getStringList(tasksKey) ?? [];
     // final updatedList =
     //     stringList.map((task) => TaskModel.fromJson(jsonDecode(task))).toList();
 
@@ -95,34 +100,45 @@ class TasksProvider extends StateNotifier<TasksState> {
     int finished =0;
     int totalTasks =0;
     //REMOVE COMMENT LATER FOR LINE BELOW
-    /*updatedList.forEach((task){
-      totalTasks +=1;
-      task.status == TaskStatus.finished ? finished+=1 : null;
-    });*/
+   
 
     print('Finished: $finished\n NotFinished: $totalTasks');
+    
+    final firebaseTasks = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid)
+                .collection('tasks').get();
 
-    // state = state.copywith(tasksList: updatedList,tasksFinished: finished,totalTasks: totalTasks);
-    // print('LOADED TASKS: $updatedList');
+    final List<TaskModel> mappedTasks = firebaseTasks.docs.map((snap)=> TaskModel.fromJson(snap.data())).toList();
+    final taskList = mappedTasks;
+
+     taskList.forEach((task){
+      totalTasks +=1;
+      task.status == TaskStatus.finished ? finished+=1 : null;
+    });
+
+    state = state.copywith(tasksList: taskList,tasksFinished: finished,totalTasks: totalTasks);
+
+     print('LOADED TASKS: $taskList');
   }
 
   Future<bool> completeTask(
     TaskModel taskModel,
   ) async {
-    final prefs = await SharedPreferences.getInstance();
+    // final prefs = await SharedPreferences.getInstance();
     final taskList = state.tasksList;
 
     final int index = taskList.indexWhere((task) => task.id == taskModel.id);
     if(taskList[index].status == TaskStatus.unfinished){
     taskList[index].status = TaskStatus.finished;
-    final stringList =
-        taskList.map((task) => jsonEncode(task.toJson())).toList();
-    prefs.setStringList(tasksKey, stringList);
+    // final stringList =
+    //     taskList.map((task) => jsonEncode(task.toJson())).toList();
+    // prefs.setStringList(tasksKey, stringList);
     
 
     final int finished = state.tasksFinished! + 1;
     state = state.copywith(tasksList: taskList,tasksFinished: finished);
-    // print('Finished Tasks: ${state.finishedTasks}');
+    print('Finished Tasks: ${state.finishedTasks}');
+
+    await FirestoreService.completeTask(taskModel);
     // print('Unfinished Tasks: ${state.unfinishedTasks}');
     // print('Total tasks: ${state.totalTasks}');
     return true;

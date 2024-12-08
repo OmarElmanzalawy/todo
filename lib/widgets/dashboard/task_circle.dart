@@ -54,7 +54,7 @@ class _TaskCircleState extends ConsumerState<TaskCircle> with SingleTickerProvid
     final provider = ref.watch(tasksProvider);
     return GestureDetector(
       onTap: ()async{
-        await FirestoreService.completeTask(widget.taskmodel);
+        await ref.read(tasksProvider.notifier).completeTask(widget.taskmodel);
         /*print('circle tap: ${widget.taskmodel.title}');
         final bool isfalse = await ref.read(tasksProvider.notifier).completeTask(widget.taskmodel);
         _controller.forward();
