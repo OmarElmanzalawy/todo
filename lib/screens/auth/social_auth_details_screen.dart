@@ -1,19 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/Providers/image_picker_provider.dart';
 import 'package:todo/constants/app_colors.dart';
+import 'package:todo/constants/app_constants.dart';
 import 'package:todo/service/auth_service.dart';
-import 'package:todo/service/dialogue_service.dart';
-import 'package:todo/service/init_getit.dart';
 import 'package:todo/widgets/auth/titled_textfield.dart';
 
-class SignUpScreen extends ConsumerWidget {
-  SignUpScreen({super.key});
+class SocialAuthDetailsScreen extends ConsumerWidget {
+  final String userId;
+  SocialAuthDetailsScreen({super.key,required this.userId});
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
 
   @override
@@ -25,15 +22,18 @@ class SignUpScreen extends ConsumerWidget {
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Sign Up',
+            'Almost There!',
             style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.w600,
                 color: AppColors.darkestGreen),
             textAlign: TextAlign.center,
           ),
+          SizedBox(height: 2,),
+          Text('Pick your profile picture and\n username to get started.',style: AppConstants.thinText,),
           SizedBox(
             height: 25,
           ),
@@ -53,7 +53,7 @@ class SignUpScreen extends ConsumerWidget {
                     icon: Icon(Icons.add_a_photo,color: Colors.white,),
                     onPressed: (){
                       ref.read(imagePickerProvider.notifier).pickImage();
-                    }, 
+                    },
                     ),
                   decoration: BoxDecoration(
                     color:  AppColors.darkGreen, //Colors.grey.shade200,
@@ -73,65 +73,16 @@ class SignUpScreen extends ConsumerWidget {
                   controller: _usernameController,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: TitledTextField(
-                  title: 'Email',
-                  hint: 'enter your email',
-                  controller: _emailController,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: TitledTextField(
-                  title: 'Password',
-                  hint: 'enter your password',
-                  controller: _passwordController,
-                  isSensitive: true,
-                ),
-              ),
             ],
           ),
           SizedBox(
             height: 15,
-          ),
-          Text(
-            'OR',
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              GestureDetector(
-                child: CircleAvatar(
-                    radius: 35,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage('assets/icons/apple.png')),
-              ),
-              GestureDetector(
-                child: CircleAvatar(
-                    radius: 35,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage('assets/icons/google.png')),
-              ),
-            ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 30.0),
             child: ElevatedButton(
               onPressed: () async{
-                bool didRegister = await AuthService.registerUser(username: _usernameController.text, email: _emailController.text, password: _passwordController.text,image: profilePhoto);
-                if(didRegister) { 
-
-                  getIt<DialogueService>().showSnackbar(text: 'Registered Successfully', context: context);
-                  Navigator.pushNamed(context, '/dashboard');
-                 }
-                 else{
-                getIt<DialogueService>().showSnackbar(text: 'Error While Registring', context: context);
-                 }
+                await AuthService.captureGoogleUserDetails(context: context, username: _usernameController.text, userId: userId,image: profilePhoto);
               },
               style: ButtonStyle(
                 padding: WidgetStatePropertyAll(EdgeInsets.all(12)),
@@ -146,26 +97,12 @@ class SignUpScreen extends ConsumerWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  'Register',
+                  'Submit',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Already have an account?'),
-              TextButton(
-                onPressed: () {},
-                child: Text('Login'),
-                style: ButtonStyle(
-                    foregroundColor:
-                        WidgetStatePropertyAll(AppColors.darkGreen),
-                    splashFactory: NoSplash.splashFactory),
-              )
-            ],
           ),
         ],
       ),

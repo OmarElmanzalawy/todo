@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:todo/models/user_model.dart';
+import 'package:todo/screens/auth/social_auth_details_screen.dart';
 
 class AuthService {
 
@@ -35,6 +38,7 @@ class AuthService {
     }
   }
 
+
 static Future<bool> login({required String email,required String password})async{
 
   try{
@@ -51,4 +55,85 @@ static Future<bool> login({required String email,required String password})async
 
 }
 
+static singUpWithGoogle(BuildContext context)async{
+  try{
+  final GoogleSignInAccount? gUser= await GoogleSignIn().signIn();
+
+  if(gUser == null) return;
+
+  final GoogleSignInAuthentication gAuth = await gUser.authentication;
+
+  final credential = GoogleAuthProvider.credential(
+    accessToken: gAuth.accessToken,
+    idToken: gAuth.idToken
+  );
+
+  final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+  
+  final userId = userCredential.user?.uid;
+
+    if (userId != null) {
+      // Navigate to SocialAuthDetailsScreen
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SocialAuthDetailsScreen(userId: userId),
+        ),
+      );
+    }
+
+  }
+
+  catch(e){
+    print(e.toString());
+  }
 }
+
+
+static signInWithGoogle(BuildContext context)async{
+  try{
+  final GoogleSignInAccount? gUser= await GoogleSignIn().signIn();
+
+  if(gUser == null) return;
+
+  final GoogleSignInAuthentication gAuth = await gUser.authentication;
+
+  final credential = GoogleAuthProvider.credential(
+    accessToken: gAuth.accessToken,
+    idToken: gAuth.idToken
+  );
+
+   await FirebaseAuth.instance.signInWithCredential(credential).catchError((e){
+    Navigator.pushNamed(context, '/signIn');
+  });
+  
+  print('Login Successfully');
+  Navigator.pushNamed(context, '/dashboard');
+
+  }
+  catch(e){
+    print(e.toString());
+  }
+}
+
+static captureGoogleUserDetails({required BuildContext context,required String username,File? image,required String userId})async{
+  try{
+    if(username.isNotEmpty){
+  await FirebaseAuth.instance.currentUser!.updateDisplayName(username);
+    String? downloadUrl = image != null ? await _uploadToStorage(image) : null;
+    UserModel user = UserModel(email: FirebaseAuth.instance.currentUser!.email!, uid: userId, username: username,profileUrl: downloadUrl);
+    await FirebaseFirestore.instance.collection('users').doc(userId).set(user.toJson()).catchError((e){
+      Navigator.pushNamed(context, '/signup');
+      print(e.toString());
+    });
+    Navigator.pushNamed(context,'/dashboard');
+    print('registerd successully');
+  }
+  }
+  catch(e){
+    print('error occured');
+    print(e.toString());
+  }
+}
+}
+

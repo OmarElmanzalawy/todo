@@ -19,6 +19,7 @@ static Future init()async{
   );
   print('Firebase Initialized');
   setupLocator();
+  
 }
 
 
@@ -29,9 +30,6 @@ static Future loadLocalData(WidgetRef ref)async{
   //await ref.read(tasksProvider.notifier).clearTasks();
   await ref.read(tasksProvider.notifier).loadTasks();
   await ref.read(profilePicUrlProvider.notifier).fetchProfilePicture();
-  //Load from firestore
-
-
   });
 
 

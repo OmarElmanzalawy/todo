@@ -14,5 +14,4 @@ class DotIndex extends _$DotIndex{
     state = value;
     pagecontroller!= null ? pagecontroller.animateToPage(value, duration: Duration(milliseconds: 300), curve: Curves.easeInOut): null;
   }
-
 }

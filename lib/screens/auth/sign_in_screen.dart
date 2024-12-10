@@ -82,7 +82,8 @@ class SignInScreen extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     backgroundImage: AssetImage('assets/icons/apple.png')),
               ),
-              GestureDetector(
+              InkWell(
+                onTap: () async => await AuthService.signInWithGoogle(context),
                 child: CircleAvatar(
                     radius: 35,
                     backgroundColor: Colors.transparent,
