@@ -32,8 +32,12 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   @override
   Widget build(BuildContext context) {
     final String? profileUrl = ref.read(profilePicUrlProvider);
+
     print('rebuilt');
     final tasks = ref.watch(tasksProvider);
+    final unfinishedTasks = tasks.tasksList.map((task){
+      
+    });
     final bool isTasksEmpty = tasks.tasksList.length == 0;
     Size size = MediaQuery.sizeOf(context);
     return Theme(
@@ -242,9 +246,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   itemExtent:
                                       MediaQuery.sizeOf(context).width - 80,
                                   children: List.generate(
-                                      tasks.tasksList.length, (int index) {
+                                      tasks.unfinishedTasks.length, (int index) {
                                     return DashTask(
-                                      taskModel: tasks.tasksList[index],
+                                      taskModel: tasks.unfinishedTasks[index],
                                     );
                                   }),
                                 ),

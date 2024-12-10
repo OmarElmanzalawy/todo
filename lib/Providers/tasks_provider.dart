@@ -30,6 +30,7 @@ class TasksProvider extends StateNotifier<TasksState> {
     prefs.setStringList(tasksKey, stringList);*/
     //REMOVE COMMENT LATER FOR LINE BELOW
     final int totalTasks = state.totalTasks! + 1;
+    
     await FirestoreService.addTask(taskModel,FirebaseAuth.instance.currentUser!.uid);
     state = state.copywith(tasksList: taskList,totalTasks: totalTasks);
     //print('Unfinished Tasks after add: ${state.unfinishedTasks}');

@@ -10,7 +10,7 @@ class SplashScreen extends ConsumerWidget {
   SplashScreen({super.key});
 
   final PageController _pageController = PageController();
-
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(dotIndexProvider);
