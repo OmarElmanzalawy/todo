@@ -38,7 +38,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     final unfinishedTasks = tasks.tasksList.map((task){
       
     });
-    final bool isTasksEmpty = tasks.tasksList.length == 0;
+    final bool isTasksEmpty = tasks.tasksList.length == 0 || tasks.finishedTasks.length == tasks.tasksList.length;
     Size size = MediaQuery.sizeOf(context);
     return Theme(
       data: AppThemeData.greenTheme,
@@ -74,14 +74,11 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                               
                         ),
                         Spacer(),
-                        CircleIcon(icon: AppIcons.notifications_outline),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        CircleIcon(icon: AppIcons.plus),
+                        Container(width: 40,height: 40,child: AppIcons.currency,),
                         SizedBox(
                           width: 15,
-                        )
+                        ),
+                        Text('15')
                       ],
                     ),
                   ),
@@ -195,7 +192,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                       Row(
                         children: [
                           const Text(
-                            'Today Tasks',
+                            'Unfinished Tasks',
                             style: TextStyle(
                                 color: AppColors.black,
                                 fontSize: 18,
@@ -234,7 +231,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           child: isTasksEmpty
                               ? Center(
                                   child: Text(
-                                    'No Tasks Created',
+                                    tasks.finishedTasks.isNotEmpty ? 'All tasks are finished'  : 'No Tasks Created',
                                     style: AppConstants.thinText.copyWith(
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w300),

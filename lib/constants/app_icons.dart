@@ -9,5 +9,6 @@ class AppIcons{
   static const IconData tick = Icons.check;
   static const IconData delete = Icons.delete;
   static const IconData alarm = Icons.alarm;
+  static Image currency = Image.asset('assets/icons/currency.png',fit: BoxFit.cover,);
 }
 
