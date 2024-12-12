@@ -26,8 +26,8 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // initialRoute: FirebaseAuth.instance.currentUser == null  ? '/splash' : '/dashboard',
-      initialRoute: '/rewards',
+      initialRoute: FirebaseAuth.instance.currentUser == null  ? '/splash' : '/dashboard',
+      // initialRoute: '/rewards',
       routes: {
         '/dashboard': (context) => DashBoardScreen(),
         '/todo': (context) =>TodoScreen(),

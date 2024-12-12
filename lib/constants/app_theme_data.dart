@@ -27,7 +27,12 @@ static final ThemeData mainTheme = ThemeData.light().copyWith(
       
     ),
     scaffoldBackgroundColor: AppColors.primaryText,
-    colorScheme: ColorScheme.light(surface: Color.fromARGB(26, 13, 184, 247))
+    colorScheme: ColorScheme.light(surface: Color.fromARGB(26, 13, 184, 247)),
+    textButtonTheme: TextButtonThemeData(style: ButtonStyle(
+      splashFactory: NoSplash.splashFactory,
+      overlayColor: WidgetStatePropertyAll(Colors.transparent),
+      foregroundColor: WidgetStatePropertyAll(Colors.blue.shade700 ) 
+    ))
   );
 
   static final ThemeData greenTheme = ThemeData.dark().copyWith(

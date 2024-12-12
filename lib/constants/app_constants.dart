@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo/constants/app_colors.dart';
+import 'package:todo/screens/dashboard.dart';
+import 'package:todo/screens/rewards_screen.dart';
+import 'package:todo/screens/todo.dart';
+
+  Map<int,Widget> pages ={
+    0: DashBoardScreen(),
+    1: TodoScreen(),
+    2: RewardsScreen(),
+    3: Text('Profile Screen'),
+  };
 
 class AppConstants {
   static const TextStyle h1Text = TextStyle(

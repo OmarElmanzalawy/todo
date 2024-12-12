@@ -8,14 +8,14 @@ class DialogueService {
     dialogueKey = GlobalKey<NavigatorState>();
   }
 
-  Future<void> showAlertDialog(Widget widget,BuildContext context) async {
+  Future<void> showAlertDialog({required BuildContext context ,required List<Widget>? actions,required Widget title,required Widget content}) async {
     await showAdaptiveDialog(
         barrierDismissible: true,
         context: context,
         builder: (context) => AlertDialog.adaptive(
-          title: Text('Delete'),
-          content: Text('Are you sure you want to delete this task'),
-          actions: [Text('Yes'),Text('No')],
+          title: title,
+          content: content,
+          actions: actions,
         ));
   }
 

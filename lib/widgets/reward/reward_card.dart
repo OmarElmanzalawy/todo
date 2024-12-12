@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo/constants/app_colors.dart';
-import 'package:todo/widgets/glass_morphism.dart';
+import 'package:todo/constants/app_constants.dart';
+import 'package:todo/service/dialogue_service.dart';
+import 'package:todo/service/init_getit.dart';
+import 'package:todo/widgets/frosted.dart';
 
 class RewardCard extends StatelessWidget {
   const RewardCard({super.key});
@@ -8,15 +11,30 @@ class RewardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    return GlassMorphism(
-      blur: 12,
-      opacity: 0.1,
-      color: Colors.blue,
-      borderRadius: BorderRadius.circular(12),
+    return InkWell(
+      onTap: (){
+        getIt<DialogueService>().showAlertDialog(
+          context: context,
+           actions: [
+            TextButton(onPressed: (){Navigator.pop(context);}, child: Text('Cancel')),
+            TextButton(onPressed: (){
+
+              //TODO: Redeem reward functionality
+
+              Navigator.pop(context);
+              }, child: Text('Ok'))
+           ], 
+           title: Text('Redeem Reward'), 
+           content: Text('Are you sure you want to redeem this reward ?')
+           );
+      },
       child: Container(
         margin: EdgeInsets.only(right: 18),
         constraints: BoxConstraints(minWidth: size.width * 0.92,minHeight: 75),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          gradient: LinearGradient(colors: [AppColors.primaryWhiteCard,AppColors.lightGreyBorder])
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -25,6 +43,10 @@ class RewardCard extends StatelessWidget {
             children: [
               Text('Day out with friends',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
               SizedBox(height: 8,),
+              Wrap(children: [
+                Text('Description......',style: AppConstants.thinText.copyWith(color: Colors.grey.shade600),),
+              ],),
+              SizedBox(height: 12,),
               LinearProgressIndicator(
                 color: AppColors.darkestGreen,
                 backgroundColor: Colors.white,
