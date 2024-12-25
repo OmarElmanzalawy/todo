@@ -27,14 +27,25 @@ class RewardsScreen extends ConsumerWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15.0),
+                padding: const EdgeInsets.only(left: 15.0,right: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                 SafeArea(
-                  child: GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(AppIcons.back,color: Colors.white,),
+                        ),
+                        Spacer(),
+                        GestureDetector(
+                        //TODO: SHOW ADD REWARD BOTTOM SHEET
+                        onTap: () {},
+                        child: Icon(AppIcons.plus,color: Colors.white,size: 30,),
+                        ),
+                    ],
+                  ),
                 ),
                 Text('Rewards',style: TextStyle(fontSize: 30,color: AppColors.primaryWhiteCard,fontWeight: FontWeight.bold),),
                 SizedBox(height: 25,),

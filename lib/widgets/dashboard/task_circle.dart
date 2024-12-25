@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/coin_provider.dart';
 import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
@@ -54,7 +55,20 @@ class _TaskCircleState extends ConsumerState<TaskCircle> with SingleTickerProvid
     final provider = ref.watch(tasksProvider);
     return GestureDetector(
       onTap: ()async{
-        await ref.read(tasksProvider.notifier).completeTask(widget.taskmodel);
+        final isfalse = await ref.read(tasksProvider.notifier).completeTask(widget.taskmodel);
+       
+        
+        
+        //Checks if task has been completed before
+        if(!isfalse){ 
+          getIt<DialogueService>().showSnackbar(text: 'Task is already completed',context: context);
+           print('task already completed');
+        }
+        else{
+           //TODO: IMPLEMENT TASK DIFFICULTY AND CHANGE REWARD BASED ON DIFFICULTY
+          ref.read(coinsProvider.notifier).taskReward();
+        }
+
         /*print('circle tap: ${widget.taskmodel.title}');
         final bool isfalse = await ref.read(tasksProvider.notifier).completeTask(widget.taskmodel);
         _controller.forward();

@@ -66,7 +66,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 40, left: 15, right: 15),
+            padding: EdgeInsets.only(top: 40, left: 15, right: 15,bottom: 10),
             child: Column(
               children: [
                 Row(
@@ -100,7 +100,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                         child: Row(
                           children: [
                             Icon(
-                              AppIcons.plus,
+                              AppIcons.delete,
                               color: AppColors.primaryText,
                             ),
                             Text(

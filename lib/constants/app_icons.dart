@@ -10,6 +10,7 @@ class AppIcons{
   static const IconData delete = Icons.delete;
   static const IconData alarm = Icons.alarm;
   static const IconData home = Icons.house;
+  static const IconData back = Icons.arrow_back_ios;
   static Image currency = Image.asset('assets/icons/currency.png',fit: BoxFit.cover,);
 }
 

@@ -22,8 +22,6 @@ class RewardCard extends ConsumerWidget {
             TextButton(onPressed: (){
 
               //TODO: Redeem reward functionality
-              ref.read(coinsProvider.notifier).taskReward();
-
               Navigator.pop(context);
               }, child: Text('Ok'))
            ], 

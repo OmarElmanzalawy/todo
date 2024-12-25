@@ -4,13 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo/Providers/tasks_state.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/models/task_model.dart';
-import 'package:todo/service/dialogue_service.dart';
 import 'package:todo/service/firestore_service.dart';
-import 'package:todo/service/init_getit.dart';
 
 final tasksProvider = StateNotifierProvider<TasksProvider, TasksState>((ref) {
   return TasksProvider();
@@ -160,7 +157,7 @@ class TasksProvider extends StateNotifier<TasksState> {
 
 
     state = state.copywith(tasksList: tasklist);
-
+    
   }
 
 }
