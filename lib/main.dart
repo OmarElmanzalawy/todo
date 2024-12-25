@@ -15,7 +15,7 @@ void main() async{
   
   //TODO: ADD A GLOBAL CLASS WHERE EVERY CLASS GETS INITIALIZED
   await StartupService.init();
-  //await FirebaseAuth.instance.signOut(); //FOR DEBUGING ONLY
+  await FirebaseAuth.instance.signOut(); //FOR DEBUGING ONLY
   runApp(ProviderScope(child: const MainApp()));
 }
 

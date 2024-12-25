@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/coin_provider.dart';
 import 'package:todo/Providers/profile_pic_url_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
@@ -31,21 +32,9 @@ class RewardsScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                 SafeArea(
-                  child: profileUrl != null ? Container(
-                  
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(image: NetworkImage(profileUrl),fit: BoxFit.cover),
-                    shape: BoxShape.circle
-                  ),
-                                            ) :  CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: 
-                   Icon(Icons.account_circle,
-                      size: 45, color: AppColors.primaryText) 
-                      
-                  ),
+                  child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(Icons.arrow_back_ios,color: Colors.white,)),
                 ),
                 Text('Rewards',style: TextStyle(fontSize: 30,color: AppColors.primaryWhiteCard,fontWeight: FontWeight.bold),),
                 SizedBox(height: 25,),
@@ -69,7 +58,11 @@ class RewardsScreen extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('320',style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold),),
+                            Consumer(builder: (context,ref,_){
+                              final double coins = ref.watch(coinsProvider);
+                              return Text(coins.toString(),style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold),
+                              );
+                            }),
                             Text('Available Points',style: TextStyle(fontSize: 15,fontWeight: FontWeight.w400),),
                           ],
                         )

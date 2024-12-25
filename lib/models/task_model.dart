@@ -13,6 +13,10 @@ class TaskModel {
   final TimeOfDay? deadline;
   //WILL CAUSE PROBLEMS LATER
   final String id;
+  //As for now the default reward is 10 coins but later will be changed
+  //TODO: Implement a difficulty enum where user gets rewarded more based on the difficulty
+          //of the task
+  final double rewardAmount;
 
   TaskModel( 
     {
@@ -21,6 +25,7 @@ class TaskModel {
     this.status = TaskStatus.unfinished,
     this.description,
     this.deadline,
+    this.rewardAmount = 10,
   }); 
 
 
@@ -32,6 +37,7 @@ class TaskModel {
       status:  AppUtils.getTaskStatusFromString(json['status'])!,
       deadline: json['deadline'] != null ? AppUtils.stringToTimeOfDay(json['deadline']): null,
       description: json['description'] ?? '',
+      rewardAmount: json['rewardamount']
     );
   }
 
@@ -44,6 +50,7 @@ class TaskModel {
       status:  AppUtils.getTaskStatusFromString(snapshot['status'])!,
       deadline: snapshot['deadline'] != null ? AppUtils.stringToTimeOfDay(snapshot['deadline']): null,
       description: snapshot['description'] ?? '',
+      rewardAmount: snapshot['rewardamount']
     );
   }
 
@@ -54,6 +61,7 @@ class TaskModel {
     data['status'] = status.toString();
     data['deadline'] = deadline != null ? AppUtils.timeOfDayToString(deadline!): null;
     data['description'] = description;
+    data['rewardamount'] = rewardAmount;
 
     return data;
   }

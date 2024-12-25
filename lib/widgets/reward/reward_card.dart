@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/coin_provider.dart';
 import 'package:todo/constants/app_colors.dart';
 import 'package:todo/constants/app_constants.dart';
 import 'package:todo/service/dialogue_service.dart';
 import 'package:todo/service/init_getit.dart';
 import 'package:todo/widgets/frosted.dart';
 
-class RewardCard extends StatelessWidget {
+class RewardCard extends ConsumerWidget {
   const RewardCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     final size = MediaQuery.sizeOf(context);
     return InkWell(
       onTap: (){
@@ -20,6 +22,7 @@ class RewardCard extends StatelessWidget {
             TextButton(onPressed: (){
 
               //TODO: Redeem reward functionality
+              ref.read(coinsProvider.notifier).taskReward();
 
               Navigator.pop(context);
               }, child: Text('Ok'))

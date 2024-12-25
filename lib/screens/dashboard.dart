@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/Providers/coin_provider.dart';
 import 'package:todo/Providers/profile_pic_url_provider.dart';
 import 'package:todo/Providers/tasks_provider.dart';
 import 'package:todo/constants/app_colors.dart';
@@ -35,14 +36,14 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
 
     print('rebuilt');
     final tasks = ref.watch(tasksProvider);
-    final unfinishedTasks = tasks.tasksList.map((task){
-      
-    });
-    final bool isTasksEmpty = tasks.tasksList.length == 0 || tasks.finishedTasks.length == tasks.tasksList.length;
+    final unfinishedTasks = tasks.tasksList.map((task) {});
+    final bool isTasksEmpty = tasks.tasksList.length == 0 ||
+        tasks.finishedTasks.length == tasks.tasksList.length;
     Size size = MediaQuery.sizeOf(context);
     return Theme(
       data: AppThemeData.greenTheme,
       child: Scaffold(
+       
         body: Stack(
           children: [
             Container(
@@ -58,27 +59,47 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                         const EdgeInsets.only(left: 15.0, bottom: 20, top: 50),
                     child: Row(
                       children: [
-                        profileUrl != null ? Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(image: NetworkImage(profileUrl),fit: BoxFit.cover),
-                            shape: BoxShape.circle
-                          ),
-                        ):
-                        CircleAvatar(
-                          backgroundColor: Colors.transparent,
-                          child: 
-                           Icon(Icons.account_circle,
-                              size: 50, color: AppColors.primaryText) 
-                              
-                        ),
+                        profileUrl != null
+                            ? Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(profileUrl),
+                                        fit: BoxFit.cover),
+                                    shape: BoxShape.circle),
+                              )
+                            : CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                child: Icon(Icons.account_circle,
+                                    size: 50, color: AppColors.primaryText)),
                         Spacer(),
-                        Container(width: 40,height: 40,child: AppIcons.currency,),
+                        Consumer(builder: (context,ref,_){
+                            final double coins = ref.watch(coinsProvider);
+                            return GestureDetector(
+                          onTap: () => Navigator.pushNamed(context, '/rewards'),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 35,
+                                height: 35,
+                                child: AppIcons.currency,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                coins.toString(),
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        );
+                        }),
                         SizedBox(
-                          width: 15,
+                          width: 20,
                         ),
-                        Text('15')
                       ],
                     ),
                   ),
@@ -231,7 +252,9 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                           child: isTasksEmpty
                               ? Center(
                                   child: Text(
-                                    tasks.finishedTasks.isNotEmpty ? 'All tasks are finished'  : 'No Tasks Created',
+                                    tasks.finishedTasks.isNotEmpty
+                                        ? 'All tasks are finished'
+                                        : 'No Tasks Created',
                                     style: AppConstants.thinText.copyWith(
                                         color: AppColors.black,
                                         fontWeight: FontWeight.w300),
@@ -243,7 +266,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                                   itemExtent:
                                       MediaQuery.sizeOf(context).width - 80,
                                   children: List.generate(
-                                      tasks.unfinishedTasks.length, (int index) {
+                                      tasks.unfinishedTasks.length,
+                                      (int index) {
                                     return DashTask(
                                       taskModel: tasks.unfinishedTasks[index],
                                     );

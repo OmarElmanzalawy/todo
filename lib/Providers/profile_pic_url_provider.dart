@@ -11,7 +11,7 @@ class ProfilePicUrlNotifier extends StateNotifier<String?> {
   
   Future<void> fetchProfilePicture()async{
   final DocumentSnapshot docRef = await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get();
-   state = docRef.get('profilephoto');
+   state = docRef.get('profilephoto') ;
 }
 
 
